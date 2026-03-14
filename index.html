@@ -853,8 +853,8 @@ function App(){
                 <p style={{fontSize:12,color:"#6b7280"}}>각 구간 유량·관경·직관 길이·관부속 수량 입력 → 손실수두 자동 계산</p>
                 <button onClick={add} style={{padding:"6px 14px",background:"#16a34a",color:"white",border:"none",borderRadius:8,cursor:"pointer",fontWeight:700,fontSize:12,fontFamily:"'Noto Sans KR',sans-serif"}}>+ 구간 추가</button>
               </div>
-              <div style={{width:"100%"}}>
-                <table style={{borderCollapse:"collapse",fontSize:11,width:"100%",tableLayout:"fixed"}}>
+              <div style={{width:"100%",overflowX:"auto",WebkitOverflowScrolling:"touch"}}>
+                <table style={{borderCollapse:"collapse",fontSize:11,width:"100%",tableLayout:"fixed",minWidth:900}}>
                   <colgroup>
                     <col style={{width:"3%"}}/><col style={{width:"7%"}}/><col style={{width:"6%"}}/><col style={{width:"6%"}}/>
                     <col style={{width:"5%"}}/><col style={{width:"5%"}}/><col style={{width:"5%"}}/><col style={{width:"5%"}}/>
