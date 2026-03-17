@@ -58,7 +58,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:0.5;}
     size:A4 portrait;
     margin:14mm 12mm 22mm 14mm;
     @bottom-right{
-      content:"MANMIN-Ver2.0";
+      content:"MANMIN-Ver3.0";
       font-family:'Orbitron',sans-serif;
       font-size:8pt;
       font-weight:700;
@@ -608,11 +608,11 @@ function FormulaModal({onClose}){
         <div className="fml-sec-ttl" style={{color:"#15803d"}}>⚡ 전동기 동력 계산</div>
         <div className="fml-card">
           <div className="fml-card-ttl">O — 전동기 이론 출력 (kW)</div>
-          <code className="fml-eq">P = 0.163 × L(m³/min) × J(m) × K ÷ η</code>
+          <code className="fml-eq">P = 0.163 × Q(m³/min) × H(m) × K ÷ η</code>
           <div className="fml-note">
             0.163: 단위환산 상수 (ρ·g ÷ 60,000)<br/>
-            L = 토출량(ℓ/min) ÷ 1,000 → m³/min<br/>
-            J: 전양정 (m)<br/>
+            Q = 토출량(ℓ/min) ÷ 1,000 → m³/min<br/>
+            H: 전양정 (m)<br/>
             K: 전달계수 — 전동기 직결 1.1 / 전동기 이외 원동기 1.15<br/>
             η: 펌프 효율
           </div>
@@ -866,7 +866,7 @@ function App(){
               <div style={{fontSize:11,marginTop:8,opacity:0.85,fontFamily:"'Noto Sans KR',sans-serif",letterSpacing:"0.02em"}}>
                 Outdoor Fire Hydrant Pump Capacity Calculator · NFPC 109 적용&nbsp;
                 <span style={{fontFamily:"'Orbitron',sans-serif",fontWeight:900,fontSize:12,color:"#86efac",letterSpacing:"0.08em",textShadow:"0 0 8px rgba(134,239,172,0.6)"}}>
-                  MANMIN · Ver-2.0
+                  MANMIN · Ver-3.0
                 </span>
               </div>
             </div>
@@ -1051,13 +1051,9 @@ function App(){
                         <tr key={i} style={{background:bg}}>
                           <td style={S.cell}><b style={{color:"#374151"}}>{i+1}</b></td>
                           <td style={S.cell}>
-                            <select value={s.flow} onChange={e=>upd(i,"flow",+e.target.value)}
-                              style={{width:"100%",padding:"2px 1px",fontSize:10,border:"none",background:"transparent",
-                                fontFamily:"'Noto Sans Mono',monospace",textAlign:"center",outline:"none"}}>
-                              {[350,700].map(q=>(
-                                <option key={q} value={q}>{q}</option>
-                              ))}
-                            </select>
+                            <input type="number" min="0" value={s.flow||""} placeholder="350"
+                              onChange={e=>upd(i,"flow",parseFloat(e.target.value)||0)}
+                              style={{width:"100%",padding:"2px 2px",textAlign:"center",fontSize:10,border:"1px solid #e5e7eb",borderRadius:4,fontFamily:"'Noto Sans Mono',monospace",background:"white"}}/>
                           </td>
                           <td style={S.cell}>
                             <select value={s.dia} onChange={e=>upd(i,"dia",+e.target.value)}
@@ -1102,7 +1098,7 @@ function App(){
               </div>
             </Box>
             <div style={{textAlign:"right",fontFamily:"'Orbitron',sans-serif",fontSize:10,fontWeight:700,color:"#94a3b8",letterSpacing:"0.08em",paddingRight:4}}>
-              MANMIN · Ver-2.0
+              MANMIN · Ver-3.0
             </div>
           </div>
         )}
@@ -1192,7 +1188,7 @@ function App(){
               </div>
             </div>
             <div style={{textAlign:"right",fontFamily:"'Orbitron',sans-serif",fontSize:10,fontWeight:700,color:"#94a3b8",letterSpacing:"0.08em",marginTop:6,paddingRight:4}}>
-              MANMIN · Ver-2.0
+              MANMIN · Ver-3.0
             </div>
           </div>
         )}
@@ -1252,7 +1248,7 @@ function App(){
                 <RRow no="F" label="배관류에 의한 손실수두 (h₂)"        value={f3(C.F)}          unit="m"  basis={`하단 배관 마찰손실표 참조 — ${C.pCfg.shortLabel}, C=${C.pCfg.C}`}/>
                 <RRow no="G" label="호스의 마찰손실수두 (h₃)"           value={f3(C.G)}          unit="m"  basis={`${C.hose.label} — ${C.hose.rate} m/100m × ${sys.hoseLen} m (${sys.hoseLen/15}본, NFPC 109 제6조② 65mm 호스)`}/>
                 <RRow no="H" label="노즐선단 방수압력 환산수두 (h₄)"   value={f3(NOZZLE_HEAD)}  unit="m"  basis="2.5 kgf/㎠ ⇒ 25 m  (NFPC 109 제5조①③ — 0.25 MPa 이상)"/>
-                <RRow no="I" label="안전율 (SF = 10%)"                  value={f3(C.I)}          unit="m"  basis={`I = (E+F+G+H) × 0.1 = ${f3(C.E+C.F+C.G+C.H4)} × 0.1`}/>
+                <RRow no="I" label="안전율 (SF = 10%)"                  value={f3(C.I)}          unit="m"  basis={`I = (E+F+G+H₄) × 0.1 = ${f3(C.E+C.F+C.G+C.H4)} × 0.1`}/>
                 <RRow no="J" label="전  양  정"                         value={`${f3(C.Jraw)} → ${C.J}`} unit="m"  basis={`J = E+F+G+H+I = ${f3(C.Jraw)} m → ${C.J} m (올림 적용)`} hi/>
               </RSection>
 
@@ -1352,7 +1348,7 @@ function App(){
                 {sys.pipeType==="STS"&&" (내식성 배관 — C=150 적용)"}
               </div>
 
-              <div id="dev-stamp" style={{fontFamily:"'Orbitron',sans-serif",fontWeight:700,letterSpacing:"0.08em"}}>MANMIN · Ver-2.0</div>
+              <div id="dev-stamp" style={{fontFamily:"'Orbitron',sans-serif",fontWeight:700,letterSpacing:"0.08em"}}>MANMIN · Ver-3.0</div>
 
             </div>{/* /report-zone */}
             </div>{/* /rpt-inner */}
