@@ -1,71 +1,58 @@
-# 🟢 옥외소화전 펌프 용량 계산서 PWA
+# 🟢 옥외소화전 펌프 용량 계산서 PWA — Ver 3.2
 
 > **Developer MANMIN** | 대성건축사사무소  
-> Blueprint Engineering Theme · Ver 3.1
+> Blueprint Engineering Theme · **재설치 문제 원천 차단 버전**
+
+---
+
+## 🆕 Ver 3.2 — 재설치 문제 완전 해결
+
+### Ver 3.2 개선 목록
+
+| 위치 | 개선 내용 |
+|------|----------|
+| **sw.js** | `CACHE_VER = 'v3.2'` — 캐시 버전 명시적 구분 |
+| **sw.js INSTALL** | `skipWaiting()` 즉시 호출 → 대기 SW 없이 바로 활성화 |
+| **sw.js ACTIVATE** | 현재 버전 외 **모든 이전 캐시 전부 삭제** |
+| **sw.js ACTIVATE** | `clients.claim()` → 열린 탭 즉시 새 SW 적용 |
+| **sw.js MESSAGE** | `CLEAR_CACHE` 명령 추가 — 긴급 초기화 가능 |
+| **index.html SW** | 등록 시 `reg.waiting` 감지 → 즉시 `SKIP_WAITING` 전송 |
+| **index.html SW** | `appinstalled` 이벤트 → `sessionStorage` 설치 플래그 기록 |
+| **index.html SW** | `CACHE_CLEARED` 수신 시 자동 새로고침 |
+| **index.html SW** | `window.clearPwaCache()` 긴급 함수 노출 |
+| **index.html React** | `beforeinstallprompt` 시 세션플래그 초기화 |
+| **index.html React** | 설치 완료 시 `sessionStorage` 기록 |
+
+---
 
 ## 📦 파일 구성
 
 ```
-outdoor-hydrant-pwa/
-├── index.html          ← 메인 앱 (React 포함, Ver 3.1)
+outdoor-hydrant-v32/
+├── index.html          ← 메인 앱 (React 포함, Ver 3.2)
 ├── manifest.json       ← PWA 매니페스트
-├── sw.js               ← 서비스 워커 (오프라인 지원 + 업데이트 감지)
+├── sw.js               ← 서비스 워커 (Ver 3.2 — 재설치 문제 해결)
 ├── README.md
-└── icons/              ← 아이콘 13종 (옥외소화전 이미지 기반)
-    ├── favicon.ico / favicon-16.png / favicon-32.png
-    ├── apple-touch-icon.png
-    ├── icon-72 ~ 384.png
-    └── icon-512.png     ← 마스커블 / 스플래시
+└── icons/              ← 아이콘 13종
 ```
 
-## 🚀 GitHub Pages 배포 방법
+## 🚀 GitHub Pages 배포
 
-1. 이 폴더 전체를 GitHub 저장소 루트에 업로드
-2. `Settings` → `Pages` → `Source: main branch / (root)` 선택
-3. 배포된 **HTTPS URL** 로 접속 *(HTTP에서는 PWA 설치 불가)*
-4. 우하단 **📲 앱 설치** FAB 버튼 클릭 → 즉시 설치
+1. 저장소 루트에 전체 업로드
+2. `Settings → Pages → main / (root)`
+3. **HTTPS URL** 접속 → **📲 앱 설치** FAB 클릭
 
-## 📱 PWA 설치 지원 환경
+## 🛠️ 재설치 문제 발생 시 긴급 해결
 
-| 환경 | 설치 방법 |
-|------|----------|
-| Android Chrome / Edge | 📲 앱 설치 FAB 버튼 또는 하단 배너 |
-| Windows Chrome / Edge | 주소창 우측 설치 아이콘 ⊕ |
-| macOS Chrome | 주소창 우측 설치 아이콘 ⊕ |
-| iOS Safari | 공유 버튼 → "홈 화면에 추가" *(FAB 미지원)* |
+브라우저 콘솔(`F12`)에서:
+```javascript
+clearPwaCache()
+```
 
-## ✅ 이 앱의 PWA 구성 수준
-
-이 앱은 이미 최신 Ver 3.1 기준을 완벽히 갖추고 있었습니다:
-
-| 기능 | 상태 |
-|------|------|
-| 설치 FAB 버튼 | ✅ 이미 포함 (파란색, 팝-인 애니메이션) |
-| NEW 펄싱 뱃지 | ✅ 이미 포함 |
-| 계산식 FAB | ✅ 위치 조정 완료 (bottom:90px) |
-| PWA 배너 | ✅ 그린 테마 배너 |
-| SW 업데이트 감지 | ✅ Ver 3.1 완비 |
-| 주기적 SW 업데이트 | ✅ 1시간마다 체크 |
-
-## ⚙️ 기술 스택
-
-- **React 18** (UMD, unpkg CDN)
-- **Service Worker** (오프라인 캐싱, 자동 업데이트 감지)
-- **Web App Manifest** (설치, 아이콘, 바로가기)
-- **Hazen-Williams 공식** 기반 배관 마찰손실 계산
-- **NFPC 109** (소방청고시 제2025-25호, 시행 2026. 3. 1.) 기준 적용
-
-## 🎨 MANMIN 시리즈 FAB 색상 가이드
-
-| 앱 | 설치 FAB 색상 |
-|----|-------------|
-| 스프링클러 / 간이 | 🔵 파랑 `#1d4ed8` |
-| 겸용[옥내+스프] | 🟣 퍼플 `#7c3aed` |
-| 겸용[옥내+간이] | 🟢 틸 `#0d9488` |
-| 겸용[옥내+옥외] | 🌸 로즈 `#be185d` |
-| 통합 포털 | 🟤 앰버 `#b45309` |
-| 옥내소화전 | 🔴 레드 `#DC2626` |
-| **옥외소화전** | **🔵 파랑 `#1d4ed8`** |
+## 다음 버전 배포 시
+```javascript
+const CACHE_VER = 'v3.3';  // sw.js 한 줄만 변경
+```
 
 ---
-*MANMIN · Blueprint Engineering Theme · Ver 3.1*
+*MANMIN · Ver 3.2 · NFPC 109 (소방청고시 제2025-25호, 시행 2026.3.1.)*

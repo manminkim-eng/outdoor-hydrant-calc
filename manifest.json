@@ -1,7 +1,7 @@
 {
   "name": "옥외소화전 펌프 용량 계산서",
   "short_name": "옥외소화전",
-  "description": "옥외소화전 펌프 용량 계산서 - NFPC 109 / NFTC 109 기준 소방시설 설계 전용 by Developer MANMIN",
+  "description": "옥외소화전 펌프 용량 계산서 - NFPC 109 기준 소방시설 설계 전용 by Developer MANMIN",
   "start_url": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
