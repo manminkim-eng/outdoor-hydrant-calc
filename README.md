@@ -1,4 +1,4 @@
-# 🔥 옥외소화전 펌프 용량 계산서 PWA
+# 🟢 옥외소화전 펌프 용량 계산서 PWA
 
 > **Developer MANMIN** | 대성건축사사무소  
 > Blueprint Engineering Theme · Ver 3.1
@@ -6,55 +6,66 @@
 ## 📦 파일 구성
 
 ```
-pwa-project/
-├── index.html          ← 메인 앱 (React 포함)
+outdoor-hydrant-pwa/
+├── index.html          ← 메인 앱 (React 포함, Ver 3.1)
 ├── manifest.json       ← PWA 매니페스트
-├── sw.js               ← 서비스 워커 (오프라인 지원)
+├── sw.js               ← 서비스 워커 (오프라인 지원 + 업데이트 감지)
 ├── README.md
-└── icons/
-    ├── favicon.ico
-    ├── favicon-16.png
-    ├── favicon-32.png
-    ├── apple-touch-icon.png  ← iOS 홈 화면 아이콘
-    ├── icon-72.png
-    ├── icon-96.png
-    ├── icon-128.png
-    ├── icon-144.png
-    ├── icon-152.png
-    ├── icon-180.png
-    ├── icon-192.png     ← Android 기본 아이콘
-    ├── icon-384.png
-    └── icon-512.png     ← Splash Screen / 마스커블
+└── icons/              ← 아이콘 13종 (옥외소화전 이미지 기반)
+    ├── favicon.ico / favicon-16.png / favicon-32.png
+    ├── apple-touch-icon.png
+    ├── icon-72 ~ 384.png
+    └── icon-512.png     ← 마스커블 / 스플래시
 ```
 
 ## 🚀 GitHub Pages 배포 방법
 
-1. 이 폴더 전체를 GitHub 저장소에 업로드
-2. `Settings` → `Pages` → `Source: main branch / root` 선택
-3. 배포된 URL(예: `https://username.github.io/repo/`)로 접속
-4. 브라우저 주소창 우측 **설치 아이콘(⊕)** 클릭 또는 하단 배너에서 **설치** 클릭
+1. 이 폴더 전체를 GitHub 저장소 루트에 업로드
+2. `Settings` → `Pages` → `Source: main branch / (root)` 선택
+3. 배포된 **HTTPS URL** 로 접속 *(HTTP에서는 PWA 설치 불가)*
+4. 우하단 **📲 앱 설치** FAB 버튼 클릭 → 즉시 설치
 
 ## 📱 PWA 설치 지원 환경
 
 | 환경 | 설치 방법 |
 |------|----------|
-| Android Chrome | 하단 설치 배너 또는 메뉴 → "홈 화면에 추가" |
-| iOS Safari | 공유 버튼 → "홈 화면에 추가" |
-| Windows Chrome/Edge | 주소창 우측 설치 아이콘 |
-| macOS Chrome | 주소창 우측 설치 아이콘 |
+| Android Chrome / Edge | 📲 앱 설치 FAB 버튼 또는 하단 배너 |
+| Windows Chrome / Edge | 주소창 우측 설치 아이콘 ⊕ |
+| macOS Chrome | 주소창 우측 설치 아이콘 ⊕ |
+| iOS Safari | 공유 버튼 → "홈 화면에 추가" *(FAB 미지원)* |
+
+## ✅ 이 앱의 PWA 구성 수준
+
+이 앱은 이미 최신 Ver 3.1 기준을 완벽히 갖추고 있었습니다:
+
+| 기능 | 상태 |
+|------|------|
+| 설치 FAB 버튼 | ✅ 이미 포함 (파란색, 팝-인 애니메이션) |
+| NEW 펄싱 뱃지 | ✅ 이미 포함 |
+| 계산식 FAB | ✅ 위치 조정 완료 (bottom:90px) |
+| PWA 배너 | ✅ 그린 테마 배너 |
+| SW 업데이트 감지 | ✅ Ver 3.1 완비 |
+| 주기적 SW 업데이트 | ✅ 1시간마다 체크 |
 
 ## ⚙️ 기술 스택
 
-- **React 18** (UMD, CDN)
-- **Service Worker** (오프라인 캐싱, 자동 업데이트)
+- **React 18** (UMD, unpkg CDN)
+- **Service Worker** (오프라인 캐싱, 자동 업데이트 감지)
 - **Web App Manifest** (설치, 아이콘, 바로가기)
 - **Hazen-Williams 공식** 기반 배관 마찰손실 계산
-- **NFPC 109** (2026.3.1 시행) 기준 적용
+- **NFPC 109** (소방청고시 제2025-25호, 시행 2026. 3. 1.) 기준 적용
 
-## 📐 적용 법령
+## 🎨 MANMIN 시리즈 FAB 색상 가이드
 
-- 화재안전성능기준 NFPC 109 (소방청고시 제2025-25호)
-- 시행: 2026. 3. 1.
+| 앱 | 설치 FAB 색상 |
+|----|-------------|
+| 스프링클러 / 간이 | 🔵 파랑 `#1d4ed8` |
+| 겸용[옥내+스프] | 🟣 퍼플 `#7c3aed` |
+| 겸용[옥내+간이] | 🟢 틸 `#0d9488` |
+| 겸용[옥내+옥외] | 🌸 로즈 `#be185d` |
+| 통합 포털 | 🟤 앰버 `#b45309` |
+| 옥내소화전 | 🔴 레드 `#DC2626` |
+| **옥외소화전** | **🔵 파랑 `#1d4ed8`** |
 
 ---
-*MANMIN · Blueprint Engineering Theme*
+*MANMIN · Blueprint Engineering Theme · Ver 3.1*
