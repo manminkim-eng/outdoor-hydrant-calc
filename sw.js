@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════
    Service Worker — 옥외소화전 펌프 용량 계산서
-   Developer MANMIN · Ver-3.2
+   Developer MANMIN · Ver-3.3
 
    ▣ Ver 3.2 핵심 개선 — 재설치 문제 원천 차단
    ① INSTALL  : skipWaiting() 즉시 호출 → 대기 없이 바로 활성화
@@ -10,7 +10,7 @@
    ④ MESSAGE  : SKIP_WAITING / CLEAR_CACHE 모두 처리
 ═══════════════════════════════════════════════════════════════ */
 
-const CACHE_VER    = 'v3.2';
+const CACHE_VER    = 'v3.3';
 const CACHE_NAME   = `manmin-outdoor-hydrant-${CACHE_VER}`;
 const STATIC_CACHE = `manmin-outdoor-hydrant-static-${CACHE_VER}`;
 

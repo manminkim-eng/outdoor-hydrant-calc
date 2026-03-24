@@ -58,7 +58,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:0.5;}
     size:A4 portrait;
     margin:14mm 12mm 22mm 14mm;
     @bottom-right{
-      content:"MANMIN-Ver3.2";
+      content:"MANMIN-Ver3.3";
       font-family:'Orbitron',sans-serif;
       font-size:8pt;
       font-weight:700;
@@ -528,11 +528,127 @@ function RRow({no,label,value,unit,basis,hi}){
 /* ═══ 계산식 안내 모달 (NFPC 109 옥외소화전) ════════════════ */
 function FormulaModal({onClose}){
   const[activeTab,setActiveTab]=React.useState(0);
-  const TABS=["수원 · 토출량","전양정 산출","동력 계산","관부속 참고"];
+  const TABS=["🗺️ 이용방법","수원 · 토출량","전양정 산출","동력 계산","관부속 참고"];
 
   const stopProp=e=>e.stopPropagation();
 
-  /* ── 탭 0: 수원 · 토출량 ── */
+  /* ── 탭 0: 이용방법 ── */
+  const T_HOWTO=(
+    <>
+      {/* 상단 배너 */}
+      <div style={{background:"linear-gradient(135deg,#052e16,#14532d,#15803d)",borderRadius:13,padding:"16px 18px",marginBottom:16}}>
+        <div style={{fontSize:13,fontWeight:900,color:"#4ade80",marginBottom:5,display:"flex",alignItems:"center",gap:8}}>
+          <span style={{fontSize:20}}>🚒</span> 옥외소화전 펌프 용량 계산서 이용방법
+        </div>
+        <div style={{fontSize:10.5,color:"rgba(255,255,255,.75)",lineHeight:1.7}}>
+          NFPC 109 옥외소화전설비의 화재안전성능기준 [시행 2026.3.1.] · MANMIN Ver-3.3<br/>
+          아래 순서대로 입력하면 수원·양정·동력이 자동으로 산출됩니다.
+        </div>
+      </div>
+
+      {/* STEP 1 */}
+      <div style={{display:"flex",gap:11,alignItems:"flex-start",background:"#f8fafc",border:"1.5px solid #e2e8f0",borderLeft:"4px solid #15803d",borderRadius:10,padding:"13px 14px",marginBottom:9}}>
+        <div style={{minWidth:30,height:30,background:"linear-gradient(135deg,#15803d,#052e16)",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:900,color:"#fff",flexShrink:0,boxShadow:"0 2px 8px rgba(21,128,61,.35)"}}>1</div>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontSize:12,fontWeight:900,color:"#15803d",marginBottom:5}}>📋 프로젝트 기본 정보 입력</div>
+          <div style={{fontSize:10.5,color:"#374151",lineHeight:1.85}}>
+            ① <strong>공사명·설계자·날짜</strong>를 입력합니다 — 출력 계산서 상단에 표기됩니다.<br/>
+            ② 상단 탭에서 <strong>「⚙️ 조건 입력」</strong>을 선택하여 시스템 기본 조건을 설정합니다.<br/>
+            ③ 모든 입력값은 실시간으로 계산서에 자동 반영됩니다.
+          </div>
+        </div>
+      </div>
+
+      {/* STEP 2 */}
+      <div style={{display:"flex",gap:11,alignItems:"flex-start",background:"#f0fdf4",border:"1.5px solid #bbf7d0",borderLeft:"4px solid #16a34a",borderRadius:10,padding:"13px 14px",marginBottom:9}}>
+        <div style={{minWidth:30,height:30,background:"linear-gradient(135deg,#16a34a,#14532d)",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:900,color:"#fff",flexShrink:0,boxShadow:"0 2px 8px rgba(22,163,74,.35)"}}>2</div>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontSize:12,fontWeight:900,color:"#15803d",marginBottom:5}}>💧 수원 및 토출량 조건 설정</div>
+          <div style={{fontSize:10.5,color:"#374151",lineHeight:1.85}}>
+            ① <strong>설치 소화전 수</strong>를 입력합니다 — 동시사용 기준 최대 2개 한도가 자동 적용됩니다.<br/>
+            ② 수원 용량은 <strong>N × 7 m³</strong>(NFPC 109 제4조①)으로 자동 계산됩니다.<br/>
+            ③ 펌프 토출량은 <strong>N × 350 ℓ/min</strong>이 자동 산출됩니다.
+          </div>
+        </div>
+      </div>
+
+      {/* STEP 3 */}
+      <div style={{display:"flex",gap:11,alignItems:"flex-start",background:"#fefce8",border:"1.5px solid #fde047",borderLeft:"4px solid #ca8a04",borderRadius:10,padding:"13px 14px",marginBottom:9}}>
+        <div style={{minWidth:30,height:30,background:"linear-gradient(135deg,#ca8a04,#854d0e)",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:900,color:"#fff",flexShrink:0,boxShadow:"0 2px 8px rgba(202,138,4,.35)"}}>3</div>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontSize:12,fontWeight:900,color:"#854d0e",marginBottom:5}}>📏 펌프 양정 조건 입력</div>
+          <div style={{fontSize:10.5,color:"#374151",lineHeight:1.85}}>
+            ① <strong>실양정(m)</strong>을 입력합니다 — 펌프 설치 위치에서 최원격 옥외소화전까지의 높이차입니다.<br/>
+            ② <strong>호스 길이(m)·호스 종류</strong>를 선택합니다 — 65mm 아마/고무내장 마찰손실이 자동 적용됩니다.<br/>
+            ③ <strong>배관 세그먼트</strong>를 추가하여 관경·길이·관부속 수량을 입력하면 Hazen-Williams 공식으로 마찰손실이 자동 계산됩니다.<br/>
+            ④ 전양정 = (실양정 + 배관손실 + 호스손실 + 노즐환산수두 25m) × 1.1(안전율) 후 올림 처리됩니다.
+          </div>
+        </div>
+      </div>
+
+      {/* STEP 4 */}
+      <div style={{display:"flex",gap:11,alignItems:"flex-start",background:"#fff1f2",border:"1.5px solid #fecdd3",borderLeft:"4px solid #e11d48",borderRadius:10,padding:"13px 14px",marginBottom:9}}>
+        <div style={{minWidth:30,height:30,background:"linear-gradient(135deg,#e11d48,#9f1239)",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:900,color:"#fff",flexShrink:0,boxShadow:"0 2px 8px rgba(225,29,72,.35)"}}>4</div>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontSize:12,fontWeight:900,color:"#9f1239",marginBottom:5}}>⚡ 전동기 동력 조건 설정</div>
+          <div style={{fontSize:10.5,color:"#374151",lineHeight:1.85}}>
+            ① <strong>펌프 관경(mm)</strong>을 선택합니다 — 관경별 펌프 효율(η)이 자동 설정됩니다.<br/>
+            ② <strong>전달 방식</strong>(전동기 직결·이외 원동기)을 선택합니다 — 전달계수 K가 자동 적용됩니다.<br/>
+            ③ 이론 출력(kW) 계산 후 HP로 환산하여 <strong>상위 표준 규격</strong>이 자동 선정됩니다.
+          </div>
+        </div>
+      </div>
+
+      {/* STEP 5 */}
+      <div style={{display:"flex",gap:11,alignItems:"flex-start",background:"#f0fdf4",border:"1.5px solid #a7f3d0",borderLeft:"4px solid #059669",borderRadius:10,padding:"13px 14px",marginBottom:16}}>
+        <div style={{minWidth:30,height:30,background:"linear-gradient(135deg,#059669,#064e3b)",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:900,color:"#fff",flexShrink:0,boxShadow:"0 2px 8px rgba(5,150,105,.35)"}}>5</div>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontSize:12,fontWeight:900,color:"#065f46",marginBottom:5}}>🖨️ 결과 확인 및 출력</div>
+          <div style={{fontSize:10.5,color:"#374151",lineHeight:1.85}}>
+            ① <strong>「📄 계산서」 탭</strong>에서 최종 산출 결과를 확인합니다.<br/>
+            ② 상단 <strong>🖨️ 인쇄 버튼</strong>을 클릭하면 소방 계산서 양식으로 A4 출력·PDF 저장됩니다.<br/>
+            ③ <strong>「📱 모바일」 탭</strong>에서 JPG로 저장하거나 공유할 수 있습니다.<br/>
+            ④ PWA 설치: 우측 하단 설치 버튼 또는 iOS Safari → 공유 → 홈 화면에 추가.
+          </div>
+        </div>
+      </div>
+
+      {/* 주요 기능 */}
+      <div className="fml-sec-ttl" style={{color:"#15803d",marginTop:0}}>💡 주요 기능 안내</div>
+      <div className="fml-g2">
+        <div className="fml-card" style={{borderLeft:"3px solid #15803d"}}>
+          <div className="fml-card-ttl" style={{color:"#15803d"}}>📐 계산식 안내 버튼</div>
+          <div className="fml-note">우측 하단 플로팅 버튼(FAB)을 클릭하면 이 창이 열립니다. 탭을 전환하여 수원·전양정·동력·관부속 상당직관 계산식을 확인하세요.</div>
+        </div>
+        <div className="fml-card" style={{borderLeft:"3px solid #16a34a"}}>
+          <div className="fml-card-ttl" style={{color:"#16a34a"}}>⚡ 실시간 자동 계산</div>
+          <div className="fml-note">모든 입력값 변경 즉시 수원·양정·동력이 실시간 재산출됩니다. 별도 계산 버튼 없이 값만 변경하면 됩니다.</div>
+        </div>
+        <div className="fml-card" style={{borderLeft:"3px solid #ca8a04"}}>
+          <div className="fml-card-ttl" style={{color:"#ca8a04"}}>🔩 배관 세그먼트 추가</div>
+          <div className="fml-note">「+ 세그먼트 추가」 버튼으로 구간별 배관을 등록합니다. 관경·길이·관부속 수량을 입력하면 상당직관 및 마찰손실이 자동 계산됩니다.</div>
+        </div>
+        <div className="fml-card" style={{borderLeft:"3px solid #059669"}}>
+          <div className="fml-card-ttl" style={{color:"#059669"}}>📋 법적 기준 자동 적용</div>
+          <div className="fml-note">소화전 수 입력 시 NFPC 109 기준에 따라 동시사용 개수·수원 용량·토출량이 자동 분기 적용됩니다.</div>
+        </div>
+      </div>
+
+      {/* 법적 근거 */}
+      <div className="fml-hi-box" style={{marginTop:8}}>
+        <div className="fml-card-ttl" style={{color:"#166534"}}>📌 주요 법적 근거</div>
+        <div className="fml-note" style={{fontSize:10.5,lineHeight:2.1}}>
+          <strong>NFPC 109</strong> — 옥외소화전설비의 화재안전성능기준 [시행 2026.3.1.]<br/>
+          <strong>제4조①</strong> — 수원 = N × 7 m³ (최대 N=2개)<br/>
+          <strong>제5조①③</strong> — 방수량 350 ℓ/min 이상 / 방수압 0.25 MPa 이상<br/>
+          <strong>제6조②</strong> — 호스: 65mm 옥외소화전 전용 (아마·고무내장)<br/>
+          <strong>Hazen-Williams 공식</strong> — 배관 마찰손실 산정 (C값: 백관 120, STS 150)
+        </div>
+      </div>
+    </>
+  );
+
+  /* ── 탭 1: 수원 · 토출량 ── */
   const T0=(
     <>
       <div className="fml-sec">
@@ -739,7 +855,7 @@ Auto V/V · Glove V/V → Ball V/V</code>
     </>
   );
 
-  const PANELS=[T0,T1,T2,T3];
+  const PANELS=[T_HOWTO,T0,T1,T2,T3];
 
   return(
     <div className="fml-overlay no-print" onClick={onClose}>
@@ -753,7 +869,7 @@ Auto V/V · Glove V/V → Ball V/V</code>
                 📐 계산식 안내
               </div>
               <div style={{fontSize:10,opacity:0.65,fontWeight:500}}>
-                NFPC 109 옥외소화전 · Hazen-Williams 공식
+                NFPC 109 옥외소화전 · Hazen-Williams 공식 · Ver-3.3
               </div>
             </div>
             <button className="fml-close" onClick={onClose} aria-label="닫기">✕</button>
@@ -843,7 +959,7 @@ function App(){
     const h=(e)=>{
       e.preventDefault();
       setInstallPrompt(e);
-      /* ★ Ver 3.2: 재설치 상황이므로 pwa-installed 플래그 초기화 */
+      /* ★ Ver 3.3: 재설치 상황이므로 pwa-installed 플래그 초기화 */
       sessionStorage.removeItem('pwa-installed');
       if(!window.matchMedia('(display-mode:standalone)').matches) setShowInstallBanner(true);
     };
@@ -857,7 +973,7 @@ function App(){
     const r=await installPrompt.userChoice;
     if(r.outcome==='accepted'){
       console.log('[PWA v3.2] 설치 완료');
-      /* ★ Ver 3.2: 설치 완료 플래그 기록 */
+      /* ★ Ver 3.3: 설치 완료 플래그 기록 */
       sessionStorage.setItem('pwa-installed','1');
     }
     setInstallPrompt(null);setShowInstallBanner(false);
@@ -908,7 +1024,7 @@ function App(){
               <div style={{fontSize:11,marginTop:8,opacity:0.85,fontFamily:"'Noto Sans KR',sans-serif",letterSpacing:"0.02em"}}>
                 Outdoor Fire Hydrant Pump Capacity Calculator · NFPC 109 적용&nbsp;
                 <span style={{fontFamily:"'Orbitron',sans-serif",fontWeight:900,fontSize:12,color:"#86efac",letterSpacing:"0.08em",textShadow:"0 0 8px rgba(134,239,172,0.6)"}}>
-                  MANMIN · Ver-3.2
+                  MANMIN · Ver-3.3
                 </span>
               </div>
             </div>
@@ -1140,7 +1256,7 @@ function App(){
               </div>
             </Box>
             <div style={{textAlign:"right",fontFamily:"'Orbitron',sans-serif",fontSize:10,fontWeight:700,color:"#94a3b8",letterSpacing:"0.08em",paddingRight:4}}>
-              MANMIN · Ver-3.2
+              MANMIN · Ver-3.3
             </div>
           </div>
         )}
@@ -1230,7 +1346,7 @@ function App(){
               </div>
             </div>
             <div style={{textAlign:"right",fontFamily:"'Orbitron',sans-serif",fontSize:10,fontWeight:700,color:"#94a3b8",letterSpacing:"0.08em",marginTop:6,paddingRight:4}}>
-              MANMIN · Ver-3.2
+              MANMIN · Ver-3.3
             </div>
           </div>
         )}
@@ -1390,7 +1506,7 @@ function App(){
                 {sys.pipeType==="STS"&&" (내식성 배관 — C=150 적용)"}
               </div>
 
-              <div id="dev-stamp" style={{fontFamily:"'Orbitron',sans-serif",fontWeight:700,letterSpacing:"0.08em"}}>MANMIN · Ver-3.2</div>
+              <div id="dev-stamp" style={{fontFamily:"'Orbitron',sans-serif",fontWeight:700,letterSpacing:"0.08em"}}>MANMIN · Ver-3.3</div>
 
             </div>{/* /report-zone */}
             </div>{/* /rpt-inner */}
@@ -1446,7 +1562,7 @@ function App(){
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 </script>
 
-<!-- ═══ Service Worker Ver 3.2 — 재설치 문제 원천 차단 ═══ -->
+<!-- ═══ Service Worker Ver 3.3 — 재설치 문제 원천 차단 ═══ -->
 <script>
 (function(){
   'use strict';
