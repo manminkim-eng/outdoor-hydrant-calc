@@ -299,19 +299,29 @@ input[type=number]::-webkit-inner-spin-button{opacity:0.5;}
 }
 
 /* ═══ A4 계산서 반응형 미리보기 ═══
-   transform-origin:0 0 + translateX(lOff)scale(s) 방식:
-   ① 794px(A4) 기준 좌상단(0,0)으로 축소
-   ② translateX 로 정확히 중앙 정렬
-   ③ outer.height = inner.scrollHeight×scale 로 보정
-   → 여러 장도 자동 대응 / 인쇄 시 transform:none 복원  */
+   【원리】 transform-origin:top left 고정 후
+            translateX(offset)scale(s) 로 수동 정중앙 배치
+   ① scale  = (outerW - 16) / 794  (최대 1.0)
+   ② offset = (outerW - 794×scale) / 2  ← 픽셀 정중앙
+   ③ outer.height = inner.scrollHeight×scale+40  ← 높이 보정
+   → 데스크탑·태블릿·모바일 모두 정중앙 / 인쇄 시 transform:none */
 .rpt-outer{
-  width:100%;overflow:hidden;
-  background:#e8f5e9;padding:20px 12px;
-  border-radius:14px;margin-bottom:16px;
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+  overflow:hidden;            /* 794px 이 화면 밖으로 삐져나오지 않도록 */
+  background:#e8f5e9;
+  padding:20px 0;             /* 좌우 0 — JS offset 계산 오차 방지 */
+  border-radius:14px;
+  margin-bottom:16px;
+  position:relative;
 }
 .rpt-inner{
-  width:794px;
-  /* JS: transform-origin:0 0; transform:translateX(N)scale(S) */
+  width:794px;                /* A4 고정폭 — 절대 변경 금지 */
+  box-sizing:border-box;
+  position:relative;
+  /* JS: transform-origin:top left;
+         transform:translateX(offsetPx)scale(s); */
 }
 .rpt-hint{
   display:none;
@@ -324,7 +334,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:0.5;}
 @media print{
   .rpt-outer{background:white!important;padding:0!important;overflow:visible!important;
     border-radius:0!important;margin:0!important;height:auto!important;}
-  .rpt-inner{transform:none!important;width:auto!important;margin:0!important;}
+  .rpt-inner{transform:none!important;transform-origin:unset!important;width:794px!important;box-sizing:border-box!important;}
   .rpt-hint{display:none!important;}
 }
 
@@ -924,11 +934,14 @@ function App(){
   const add=()=>setSegs(prev=>[...prev,mkSeg()]);
 
   /* ═══ A4 계산서 반응형 스케일링 ═══
-     transform-origin:0 0 + translateX(lOff)scale(s):
-     ① 794px(A4폭)을 좌상단 기준으로 축소
-     ② lOff = (outerW - A4W×scale) / 2 로 정확한 중앙 정렬
-     ③ outer.height = inner.scrollHeight×scale+40 으로 빈공간 없앰
-     ⑤ 인쇄 시 CSS @media print 로 transform:none 복원          */
+     【transform-origin:top left + 수동 offset 방식】
+     ① scale  = (outerW - 16) / 794   (최대 1.0)
+     ② scaledW= 794 × scale
+     ③ offset = (outerW - scaledW) / 2  ← 픽셀 정중앙
+     ④ inner.transform = translateX(offset) scale(scale)
+     ⑤ outer.height = scrollHeight×scale+40  (높이 보정)
+     → 데스크탑·태블릿·모바일 모두 정중앙 유지
+     → 인쇄 시 @media print 로 transform:none 복원       */
   useEffect(()=>{
     if(tab!==2)return;
     function scaleRpt(){
@@ -937,17 +950,26 @@ function App(){
       if(!outer||!inner)return;
       const A4W=794;
       const outerW=outer.clientWidth;
-      const scale=Math.min(1,(outerW-24)/A4W);
+      const scale=Math.min(1,(outerW-16)/A4W);
+      const scaledW=A4W*scale;
+      const offset=Math.max(0,(outerW-scaledW)/2);
       if(scale>=1){
-        inner.style.cssText='width:794px;margin:0 auto;';
+        /* 데스크탑: 원본 크기, 수평 중앙 배치 */
+        inner.style.cssText=
+          'width:794px;box-sizing:border-box;'+
+          'transform-origin:top left;'+
+          `transform:translateX(${offset}px) scale(1);`;
         outer.style.height='auto';
       }else{
-        const lOff=Math.max(0,(outerW-A4W*scale)/2);
-        inner.style.cssText=`width:794px;transform-origin:0 0;transform:translateX(${lOff}px) scale(${scale});`;
+        /* 태블릿·모바일: 축소 + 정중앙 배치 */
+        inner.style.cssText=
+          'width:794px;box-sizing:border-box;'+
+          'transform-origin:top left;'+
+          `transform:translateX(${offset}px) scale(${scale});`;
         outer.style.height=(inner.scrollHeight*scale+40)+'px';
       }
     }
-    const t=setTimeout(scaleRpt,120);
+    const t=setTimeout(scaleRpt,60);
     window.addEventListener('resize',scaleRpt);
     return()=>{clearTimeout(t);window.removeEventListener('resize',scaleRpt);};
   },[tab,segs,sys,proj]);
@@ -1366,8 +1388,8 @@ function App(){
             </div>
 
             {/* ─ A4 스케일 컨테이너 ─
-                rpt-outer : overflow:hidden + JS가 height 동적 보정
-                rpt-inner : transform-origin:0 0; translateX(lOff)scale(s) */}
+                rpt-outer : overflow:hidden + position:relative + JS height 동적 보정
+                rpt-inner : transform-origin:top left; translateX(offset)scale(s) 정중앙 */}
             <div id="rpt-outer" className="rpt-outer">
               <div id="rpt-inner" className="rpt-inner">
 
