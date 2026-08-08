@@ -43,13 +43,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Noto+Sans+Mono:wght@400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="./assets/fonts/manmin-fonts.css"/><!-- 로컬 폴백 폰트 -->
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.7/babel.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Noto Sans KR',sans-serif;background:#f1f5f9;-webkit-font-smoothing:antialiased;}
-input,select,button,td,th,div,span,p,h1,h2,label{font-family:'Noto Sans KR',sans-serif !important;}
+body{font-family:'Noto Sans KR','Noto Sans KR Local',sans-serif;background:#f1f5f9;-webkit-font-smoothing:antialiased;}
+input,select,button,td,th,div,span,p,h1,h2,label{font-family:'Noto Sans KR','Noto Sans KR Local',sans-serif !important;}
 input[type=number]::-webkit-inner-spin-button{opacity:0.5;}
 
 /* ── 인쇄 ── */
@@ -81,7 +82,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:0.5;}
   color:#9ca3af;
   letter-spacing:0.05em;
   padding-top:14px;
-  font-family:'Noto Sans KR',sans-serif;
+  font-family:'Noto Sans KR','Noto Sans KR Local',sans-serif;
 }
 
 /* PWA 설치 배너 */
@@ -105,7 +106,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:0.5;}
   padding:11px 15px;cursor:pointer;
   box-shadow:0 4px 20px rgba(21,128,61,0.55);
   display:flex;flex-direction:column;align-items:center;gap:2px;
-  font-family:'Noto Sans KR',sans-serif;line-height:1.3;
+  font-family:'Noto Sans KR','Noto Sans KR Local',sans-serif;line-height:1.3;
   transition:transform .15s,box-shadow .15s;
 }
 .fml-fab:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(21,128,61,0.7);}
@@ -121,7 +122,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:0.5;}
   padding:11px 15px;cursor:pointer;
   box-shadow:0 4px 20px rgba(29,78,216,0.60);
   display:flex;flex-direction:column;align-items:center;gap:2px;
-  font-family:'Noto Sans KR',sans-serif;line-height:1.3;
+  font-family:'Noto Sans KR','Noto Sans KR Local',sans-serif;line-height:1.3;
   transition:transform .15s,box-shadow .15s;
   animation:pwaFabIn 0.5s cubic-bezier(0.34,1.5,0.64,1);
 }
@@ -192,7 +193,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:0.5;}
 .fml-tab{
   padding:9px 18px;border:none;background:transparent;
   color:rgba(255,255,255,0.6);font-size:12px;font-weight:700;
-  font-family:'Noto Sans KR',sans-serif;cursor:pointer;white-space:nowrap;
+  font-family:'Noto Sans KR','Noto Sans KR Local',sans-serif;cursor:pointer;white-space:nowrap;
   border-bottom:3px solid transparent;transition:all .15s;flex-shrink:0;
 }
 .fml-tab.on{color:#fff;border-bottom-color:#4ade80;}
@@ -354,7 +355,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:0.5;}
   color:white;padding:10px 18px;
   font-size:12px;font-weight:800;letter-spacing:0.04em;
   display:flex;align-items:center;gap:8px;
-  font-family:'Noto Sans KR',sans-serif;
+  font-family:'Noto Sans KR','Noto Sans KR Local',sans-serif;
 }
 .box-bd{padding:18px;}
 
@@ -440,12 +441,12 @@ const mkSeg=()=>({flow:350,dia:100,len:0,e90:0,e45:0,teeB:0,teeS:0,gate:0,ball:0
 const BD="1px solid #d1d5db";
 const S={
   border:BD,
-  cell:{border:BD,padding:"4px 6px",textAlign:"center",fontFamily:"'Noto Sans KR',sans-serif",fontSize:11},
+  cell:{border:BD,padding:"4px 6px",textAlign:"center",fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",fontSize:11},
 };
 const SEC_TITLE_STYLE={
   background:"#14532d",color:"white",padding:"7px 14px",
   fontWeight:800,fontSize:13,borderRadius:"6px 6px 0 0",
-  letterSpacing:"0.04em",fontFamily:"'Noto Sans KR',sans-serif",
+  letterSpacing:"0.04em",fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",
 };
 
 /* ═══ 컴포넌트 ═══════════════════════════════════════════════ */
@@ -464,12 +465,12 @@ function Box({title,accent,children}){
   );
 }
 function LabelEl({children}){return <label style={{display:"block",fontSize:11,fontWeight:700,color:"#6b7280",textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:5}}>{children}</label>;}
-function InpText({val,onChange,placeholder}){return <input type="text" value={val} placeholder={placeholder||""} onChange={e=>onChange(e.target.value)} style={{width:"100%",padding:"8px 12px",borderRadius:8,border:BD,background:"white",fontSize:13,fontFamily:"'Noto Sans KR',sans-serif",outline:"none"}}/>;}
+function InpText({val,onChange,placeholder}){return <input type="text" value={val} placeholder={placeholder||""} onChange={e=>onChange(e.target.value)} style={{width:"100%",padding:"8px 12px",borderRadius:8,border:BD,background:"white",fontSize:13,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",outline:"none"}}/>;}
 function InpNum({val,onChange,unit,min,max}){
   return(
     <div style={{display:"flex",alignItems:"center",gap:6}}>
       <input type="number" value={val} min={min} max={max} onChange={e=>onChange(parseFloat(e.target.value)||0)}
-        style={{width:"100%",padding:"8px 12px",borderRadius:8,border:BD,background:"white",fontSize:13,fontFamily:"'Noto Sans KR',sans-serif",outline:"none"}}/>
+        style={{width:"100%",padding:"8px 12px",borderRadius:8,border:BD,background:"white",fontSize:13,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",outline:"none"}}/>
       {unit&&<span style={{fontSize:12,color:"#6b7280",whiteSpace:"nowrap"}}>{unit}</span>}
     </div>
   );
@@ -477,7 +478,7 @@ function InpNum({val,onChange,unit,min,max}){
 function Sel({val,onChange,children}){
   return(
     <select value={val} onChange={e=>onChange(isNaN(+e.target.value)?e.target.value:+e.target.value)}
-      style={{width:"100%",padding:"8px 12px",borderRadius:8,border:BD,background:"white",fontSize:13,fontFamily:"'Noto Sans KR',sans-serif",outline:"none"}}>
+      style={{width:"100%",padding:"8px 12px",borderRadius:8,border:BD,background:"white",fontSize:13,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",outline:"none"}}>
       {children}
     </select>
   );
@@ -499,7 +500,7 @@ function Card({label,value,unit,formula,badge,bc}){
         {badge&&<span style={{background:tc,color:"white",borderRadius:4,padding:"1px 6px",fontSize:9,fontWeight:700}}>{badge}</span>}
       </div>
       <div style={{fontSize:22,fontWeight:900,color:tc,fontFamily:"'Noto Sans Mono',monospace",lineHeight:1.1}}>
-        {value}<span style={{fontSize:12,color:"#9ca3af",marginLeft:4,fontFamily:"'Noto Sans KR',sans-serif"}}>{unit}</span>
+        {value}<span style={{fontSize:12,color:"#9ca3af",marginLeft:4,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>{unit}</span>
       </div>
       {formula&&<div style={{fontSize:10,color:"#6b7280",marginTop:5,fontFamily:"'Noto Sans Mono',monospace"}}>{formula}</div>}
     </div>
@@ -510,7 +511,7 @@ function RSection({title,children}){
   return(
     <div style={{marginBottom:18,border:"1.5px solid #14532d",borderRadius:8,overflow:"hidden"}}>
       <div style={{...SEC_TITLE_STYLE,borderRadius:0}}>{title}</div>
-      <table style={{width:"100%",borderCollapse:"collapse",fontSize:12,fontFamily:"'Noto Sans KR',sans-serif"}}>
+      <table style={{width:"100%",borderCollapse:"collapse",fontSize:12,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>
         <thead>
           <tr style={{background:"#f0fdf4"}}>
             {["기호","항목","수치","단위","산출 근거"].map(h=>(
@@ -1030,7 +1031,7 @@ function App(){
 
   return(
     <>
-    <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#f0fdf4 0%,#f1f5f9 100%)",fontFamily:"'Noto Sans KR',sans-serif"}}>
+    <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#f0fdf4 0%,#f1f5f9 100%)",fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>
 
       {/* ── 헤더 ── */}
       <div className="no-print" style={{background:"linear-gradient(135deg,#052e16,#14532d,#15803d)",color:"white",padding:"20px 0 0"}}>
@@ -1043,7 +1044,7 @@ function App(){
               <h1 className="hdr-h1" style={{fontSize:26,fontWeight:900,letterSpacing:"0.04em",lineHeight:1.2}}>
                 옥외소화전 펌프 용량 계산서
               </h1>
-              <div style={{fontSize:11,marginTop:8,opacity:0.85,fontFamily:"'Noto Sans KR',sans-serif",letterSpacing:"0.02em"}}>
+              <div style={{fontSize:11,marginTop:8,opacity:0.85,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",letterSpacing:"0.02em"}}>
                 Outdoor Fire Hydrant Pump Capacity Calculator · NFPC 109 적용&nbsp;
                 <span style={{fontFamily:"'Orbitron',sans-serif",fontWeight:900,fontSize:12,color:"#86efac",letterSpacing:"0.08em",textShadow:"0 0 8px rgba(134,239,172,0.6)"}}>
                   MANMIN · Ver-3.3
@@ -1062,7 +1063,7 @@ function App(){
             {TABS.map((t,i)=>(
               <button key={i} onClick={()=>setTab(i)} style={{
                 padding:"11px 28px",cursor:"pointer",border:"none",fontWeight:700,fontSize:13,
-                fontFamily:"'Noto Sans KR',sans-serif",letterSpacing:"0.02em",flexShrink:0,
+                fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",letterSpacing:"0.02em",flexShrink:0,
                 background:tab===i?"#16a34a":"transparent",
                 color:tab===i?"white":"rgba(255,255,255,0.75)",
                 borderBottom:tab===i?"3px solid #4ade80":"3px solid transparent",
@@ -1078,7 +1079,7 @@ function App(){
         <div style={{maxWidth:1300,margin:"0 auto",padding:"0 24px"}} className="sum-bar">
           {[["📌 토출량",`${C.Clpm} ℓ/min`],["💧 수원",`${f3(C.D)} m³`],["📏 전양정",`${C.J} m`],
             ["⚡ 전동기",`${C.Php} HP`],["🔧 배관마찰",`${f3(C.F)} m`],["🌿 호스마찰",`${f3(C.G)} m`]].map(([l,v])=>(
-            <span key={l} style={{fontSize:12,color:"#94a3b8",fontFamily:"'Noto Sans KR',sans-serif"}}>
+            <span key={l} style={{fontSize:12,color:"#94a3b8",fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>
               {l}: <b style={{color:"#4ade80",fontFamily:"'Noto Sans Mono',monospace"}}>{v}</b>
             </span>
           ))}
@@ -1109,7 +1110,7 @@ function App(){
                 <div>
                   <LabelEl>작성일</LabelEl>
                   <input type="date" value={proj.date} onChange={e=>sp("date",e.target.value)}
-                    style={{width:"100%",padding:"8px 12px",borderRadius:8,border:BD,fontSize:13,fontFamily:"'Noto Sans KR',sans-serif",outline:"none"}}/>
+                    style={{width:"100%",padding:"8px 12px",borderRadius:8,border:BD,fontSize:13,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",outline:"none"}}/>
                 </div>
               </div>
             </Box>
@@ -1159,7 +1160,7 @@ function App(){
                     <input type="number" value={sys.pumpEff} min={10} max={80} step={1}
                       onChange={e=>{const v=Math.min(80,Math.max(10,parseInt(e.target.value)||10));ss("pumpEff",v);}}
                       style={{width:"100%",padding:"8px 12px",borderRadius:8,border:"1px solid #d1d5db",
-                        background:"white",fontSize:13,fontFamily:"'Noto Sans KR',sans-serif",outline:"none"}}/>
+                        background:"white",fontSize:13,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",outline:"none"}}/>
                     <span style={{fontSize:12,color:"#6b7280",whiteSpace:"nowrap"}}>%</span>
                   </div>
                   <div style={{fontSize:10,color:"#6b7280",marginTop:4}}>
@@ -1191,7 +1192,7 @@ function App(){
             <Box title="Ⅰ-2. 배관 구간 데이터 입력 (마찰손실 자동 계산)" accent="#14532d">
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10,flexWrap:"wrap",gap:8}}>
                 <p style={{fontSize:12,color:"#6b7280"}}>각 구간 유량·관경·직관 길이·관부속 수량 입력 → 손실수두 자동 계산</p>
-                <button onClick={add} style={{padding:"6px 14px",background:"#16a34a",color:"white",border:"none",borderRadius:8,cursor:"pointer",fontWeight:700,fontSize:12,fontFamily:"'Noto Sans KR',sans-serif",flexShrink:0}}>+ 구간 추가</button>
+                <button onClick={add} style={{padding:"6px 14px",background:"#16a34a",color:"white",border:"none",borderRadius:8,cursor:"pointer",fontWeight:700,fontSize:12,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",flexShrink:0}}>+ 구간 추가</button>
               </div>
               {/* 모바일 스크롤 안내 (860px 이하에서만 표시) */}
               <div className="seg-hint">
@@ -1214,7 +1215,7 @@ function App(){
                         "Gate\nV/V","Ball\nV/V","Angle\nV/V","Check\nV/V",
                         "상당직관\n(m)","마찰계수\n(m/100m)","손실수두\n(m)","유속\n(m/s)",""
                       ].map((h,i)=>(
-                        <th key={i} style={{border:BD,padding:"5px 2px",textAlign:"center",whiteSpace:"pre-line",lineHeight:1.3,fontFamily:"'Noto Sans KR',sans-serif",fontSize:9,fontWeight:700}}>{h}</th>
+                        <th key={i} style={{border:BD,padding:"5px 2px",textAlign:"center",whiteSpace:"pre-line",lineHeight:1.3,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",fontSize:9,fontWeight:700}}>{h}</th>
                       ))}
                     </tr>
                   </thead>
@@ -1237,7 +1238,7 @@ function App(){
                           </td>
                           <td style={S.cell}>
                             <select value={s.dia} onChange={e=>upd(i,"dia",+e.target.value)}
-                              style={{width:"100%",padding:"2px 1px",fontSize:10,border:"none",background:"transparent",fontFamily:"'Noto Sans KR',sans-serif",outline:"none"}}>
+                              style={{width:"100%",padding:"2px 1px",fontSize:10,border:"none",background:"transparent",fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",outline:"none"}}>
                               {PIPE_SIZES.map(d=><option key={d} value={d}>{d}</option>)}
                             </select>
                           </td>
@@ -1262,10 +1263,10 @@ function App(){
                   </tbody>
                 </table>
               </div>
-              <div style={{marginTop:8,padding:"8px 14px",background:"#fef2f2",border:"1.5px solid #fca5a5",borderRadius:8,fontSize:11,color:"#991b1b",fontFamily:"'Noto Sans KR',sans-serif",fontWeight:600}}>
+              <div style={{marginTop:8,padding:"8px 14px",background:"#fef2f2",border:"1.5px solid #fca5a5",borderRadius:8,fontSize:11,color:"#991b1b",fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",fontWeight:600}}>
                 ⚠️ <b>유속 제한:</b> 펌프 토출 측 주배관 유속 ≤ 4 m/s — 초과 시 ⚠ 표시
               </div>
-              <div style={{marginTop:8,padding:"10px 14px",background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:8,fontFamily:"'Noto Sans KR',sans-serif"}}>
+              <div style={{marginTop:8,padding:"10px 14px",background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:8,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>
                 <div style={{fontSize:11,fontWeight:700,color:"#374151",marginBottom:6}}>【 관부속 상당직관 적용 참고사항 】</div>
                 <ol style={{margin:0,paddingLeft:18,fontSize:10,color:"#6b7280",lineHeight:2}}>
                   <li>Elbow, Tee는 <b>나사접합</b>을 기준으로 한 것임.&nbsp;&nbsp;(용접의 경우 손실을 더 적게 적용)</li>
@@ -1304,20 +1305,20 @@ function App(){
                   <Card label="H. 노즐 환산수두 (h₄)" value={NOZZLE_HEAD} unit="m" formula="2.5 kgf/㎠ = 25 m" badge="최소압력" bc="green"/>
                 </div>
                 <div style={{background:"linear-gradient(135deg,#0a1a0d,#052e16)",borderRadius:14,padding:20}}>
-                  <div style={{color:"#94a3b8",fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:12,fontFamily:"'Noto Sans KR',sans-serif"}}>전양정 계산 과정</div>
+                  <div style={{color:"#94a3b8",fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:12,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>전양정 계산 과정</div>
                   {[["h₁ 실양정",f1(C.E)+" m"],["h₂ 배관마찰",f3(C.F)+" m"],["h₃ 호스마찰",f3(C.G)+" m"],["h₄ 노즐압력",NOZZLE_HEAD+" m"]].map(([l,v])=>(
-                    <div key={l} style={{display:"flex",justifyContent:"space-between",fontSize:13,color:"#cbd5e1",padding:"3px 0",fontFamily:"'Noto Sans KR',sans-serif"}}>
+                    <div key={l} style={{display:"flex",justifyContent:"space-between",fontSize:13,color:"#cbd5e1",padding:"3px 0",fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>
                       <span>{l}</span><span style={{fontFamily:"'Noto Sans Mono',monospace",color:"white"}}>{v}</span>
                     </div>
                   ))}
-                  <div style={{borderTop:"1px solid #334155",padding:"6px 0 0",display:"flex",justifyContent:"space-between",fontSize:13,color:"#94a3b8",fontFamily:"'Noto Sans KR',sans-serif"}}>
+                  <div style={{borderTop:"1px solid #334155",padding:"6px 0 0",display:"flex",justifyContent:"space-between",fontSize:13,color:"#94a3b8",fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>
                     <span>소계</span><span style={{fontFamily:"'Noto Sans Mono',monospace",color:"white"}}>{f3(C.E+C.F+C.G+C.H4)} m</span>
                   </div>
-                  <div style={{display:"flex",justifyContent:"space-between",fontSize:13,color:"#fbbf24",padding:"2px 0",fontFamily:"'Noto Sans KR',sans-serif"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",fontSize:13,color:"#fbbf24",padding:"2px 0",fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>
                     <span>+ 안전율 (×10%)</span><span style={{fontFamily:"'Noto Sans Mono',monospace"}}>{f3(C.I)} m</span>
                   </div>
                   <div style={{borderTop:"1px solid #4ade80",marginTop:8,paddingTop:10,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                    <span style={{color:"#4ade80",fontWeight:800,fontSize:14,fontFamily:"'Noto Sans KR',sans-serif"}}>전양정 (J)</span>
+                    <span style={{color:"#4ade80",fontWeight:800,fontSize:14,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>전양정 (J)</span>
                     <div style={{textAlign:"right"}}>
                       <div style={{fontSize:11,color:"#64748b",fontFamily:"'Noto Sans Mono',monospace"}}>{f3(C.Jraw)} m</div>
                       <div style={{fontSize:28,fontWeight:900,color:"#4ade80",fontFamily:"'Noto Sans Mono',monospace",lineHeight:1}}>{C.J} m</div>
@@ -1347,17 +1348,17 @@ function App(){
             </Box>
 
             <div style={{background:"linear-gradient(135deg,#0a1a0d,#14532d)",borderRadius:14,padding:22}}>
-              <div style={{color:"#94a3b8",fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:12,display:"flex",alignItems:"center",gap:8,fontFamily:"'Noto Sans KR',sans-serif"}}>
+              <div style={{color:"#94a3b8",fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:12,display:"flex",alignItems:"center",gap:8,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>
                 <span style={{background:"#16a34a",color:"white",borderRadius:"50%",width:22,height:22,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:900}}>Ⅱ-4</span>
                 펌프 선정 결과
               </div>
               <div style={{background:"rgba(255,255,255,0.07)",borderRadius:12,padding:16}}>
-                <div style={{color:"#4ade80",fontSize:14,fontWeight:700,marginBottom:12,fontFamily:"'Noto Sans KR',sans-serif"}}>주 펌프 사양</div>
+                <div style={{color:"#4ade80",fontSize:14,fontWeight:700,marginBottom:12,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>주 펌프 사양</div>
                 <div className="g-pump">
                   {[["토출량 (Q)",`${f3(C.M)} m³/min`],["전 양 정 (H)",`${C.J} m`],["전동기 출력",`${C.Php} HP`],
                     ["토출구경",`${sys.pumpDia} A`],["수원 용량",`${f3(C.D)} m³`],["작동 소화전",`${C.A} 개`]].map(([l,v])=>(
                     <div key={l} style={{background:"rgba(255,255,255,0.05)",borderRadius:8,padding:"8px 12px"}}>
-                      <div style={{color:"#64748b",fontSize:11,fontFamily:"'Noto Sans KR',sans-serif"}}>{l}</div>
+                      <div style={{color:"#64748b",fontSize:11,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>{l}</div>
                       <div style={{color:"white",fontSize:15,fontWeight:700,fontFamily:"'Noto Sans Mono',monospace"}}>{v}</div>
                     </div>
                   ))}
@@ -1382,7 +1383,7 @@ function App(){
               A4 전체를 화면 폭에 맞게 자동 축소합니다 · 여러 장 자동 적용 · 인쇄 시 원래 A4 크기로 출력
             </div>
             <div className="no-print" style={{display:"flex",justifyContent:"flex-end",marginBottom:14}}>
-              <button onClick={()=>window.print()} style={{padding:"10px 24px",background:"#14532d",color:"white",border:"none",borderRadius:10,cursor:"pointer",fontWeight:700,fontSize:13,fontFamily:"'Noto Sans KR',sans-serif",display:"flex",alignItems:"center",gap:8}}>
+              <button onClick={()=>window.print()} style={{padding:"10px 24px",background:"#14532d",color:"white",border:"none",borderRadius:10,cursor:"pointer",fontWeight:700,fontSize:13,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",display:"flex",alignItems:"center",gap:8}}>
                 🖨️ 인쇄 / PDF 저장
               </button>
             </div>
@@ -1393,19 +1394,19 @@ function App(){
             <div id="rpt-outer" className="rpt-outer">
               <div id="rpt-inner" className="rpt-inner">
 
-            <div id="report-zone" style={{background:"white",borderRadius:14,boxShadow:"0 1px 3px rgba(0,0,0,0.1)",border:"1px solid #e5e7eb",padding:"44px 52px",fontFamily:"'Noto Sans KR',sans-serif"}}>
+            <div id="report-zone" style={{background:"white",borderRadius:14,boxShadow:"0 1px 3px rgba(0,0,0,0.1)",border:"1px solid #e5e7eb",padding:"44px 52px",fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>
 
               {/* 제목 */}
               <div style={{textAlign:"center",marginBottom:28,borderBottom:"3px double #334155",paddingBottom:16}}>
-                <div style={{fontSize:22,fontWeight:900,letterSpacing:"0.06em",fontFamily:"'Noto Sans KR',sans-serif"}}>옥외소화전 펌프 용량 계산서</div>
-                <div style={{fontSize:12,color:"#64748b",marginTop:6,fontFamily:"'Noto Sans KR',sans-serif"}}>
+                <div style={{fontSize:22,fontWeight:900,letterSpacing:"0.06em",fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>옥외소화전 펌프 용량 계산서</div>
+                <div style={{fontSize:12,color:"#64748b",marginTop:6,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>
                   화재안전성능기준(NFPC 109) [소방청고시 제2025-25호, 시행 2026. 3. 1.]
                 </div>
                 <table style={{margin:"12px auto 0",borderCollapse:"collapse"}}>
                   <tbody>
                     <tr>
                       {[["공사명",proj.name||"(미입력)"],["설계자",proj.designer||"(미입력)"],["작성일",proj.date],["배관종류",`${C.pCfg.shortLabel} (C=${C.pCfg.C})`]].map(([k,v])=>(
-                        <td key={k} style={{border:BD,padding:"5px 14px",fontSize:12,fontFamily:"'Noto Sans KR',sans-serif",whiteSpace:"nowrap"}}>
+                        <td key={k} style={{border:BD,padding:"5px 14px",fontSize:12,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",whiteSpace:"nowrap"}}>
                           <b>{k}:</b> {v}
                         </td>
                       ))}
@@ -1445,17 +1446,17 @@ function App(){
 
               {/* ─ 배관 마찰손실 명세표 ─ */}
               <div className="page-break" style={{marginBottom:20}}>
-                <div style={{fontWeight:700,fontSize:11,marginBottom:7,color:"#374151",borderLeft:"3px solid #14532d",paddingLeft:10,fontFamily:"'Noto Sans KR',sans-serif"}}>
+                <div style={{fontWeight:700,fontSize:11,marginBottom:7,color:"#374151",borderLeft:"3px solid #14532d",paddingLeft:10,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>
                   ※ 배관 및 관부속 마찰손실 수두 상세표 &nbsp;[ h₂ = {f3(C.F)} m &nbsp;|&nbsp; 배관종류 : {C.pCfg.shortLabel}, C = {C.pCfg.C} ]
                 </div>
-                <table style={{width:"100%",borderCollapse:"collapse",fontSize:11,fontFamily:"'Noto Sans KR',sans-serif"}}>
+                <table style={{width:"100%",borderCollapse:"collapse",fontSize:11,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>
                   <thead>
                     <tr style={{background:"#14532d",color:"white"}}>
                       {["NO","유량\n(ℓ/min)","관경\n(A)","직관\n(m)",
                         "90°Elbow\n수량(상당직관)","45°Elbow\n수량(상당직관)","분류Tee\n수량(상당직관)","직류Tee\n수량(상당직관)",
                         "Gate V/V\n수량(상당직관)","Ball V/V\n수량(상당직관)","Angle V/V\n수량(상당직관)","Check V/V\n수량(상당직관)",
                         "상당직관\n합계(m)","마찰계수\n(m/100m)","손실수두\n(m)"].map((h,i)=>(
-                        <th key={i} style={{border:BD,padding:"5px 4px",textAlign:"center",whiteSpace:"pre-line",lineHeight:1.4,fontSize:9,fontWeight:700,fontFamily:"'Noto Sans KR',sans-serif"}}>{h}</th>
+                        <th key={i} style={{border:BD,padding:"5px 4px",textAlign:"center",whiteSpace:"pre-line",lineHeight:1.4,fontSize:9,fontWeight:700,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>{h}</th>
                       ))}
                     </tr>
                   </thead>
@@ -1483,7 +1484,7 @@ function App(){
                       );
                     })}
                     <tr style={{background:"#dcfce7",fontWeight:700}}>
-                      <td colSpan={14} style={{border:BD,padding:"5px 10px",textAlign:"right",color:"#14532d",fontSize:11,fontFamily:"'Noto Sans KR',sans-serif",whiteSpace:"nowrap"}}>합계 (h₂)</td>
+                      <td colSpan={14} style={{border:BD,padding:"5px 10px",textAlign:"right",color:"#14532d",fontSize:11,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",whiteSpace:"nowrap"}}>합계 (h₂)</td>
                       <td style={{border:BD,padding:"5px 6px",textAlign:"right",fontFamily:"'Noto Sans Mono',monospace",color:"#15803d",fontWeight:900,fontSize:12,paddingRight:8}}>{f3(C.F)}</td>
                     </tr>
                   </tbody>
@@ -1494,30 +1495,30 @@ function App(){
               <div style={{border:"2px solid #15803d",borderRadius:8,overflow:"hidden",marginBottom:18}}>
                 <div style={{...SEC_TITLE_STYLE,borderRadius:0}}>Ⅱ-4. 펌프 선정 결과</div>
                 <div style={{background:"#f0fdf4",padding:"14px 16px"}}>
-                  <table style={{width:"100%",borderCollapse:"collapse",fontSize:12,fontFamily:"'Noto Sans KR',sans-serif"}}>
+                  <table style={{width:"100%",borderCollapse:"collapse",fontSize:12,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>
                     <thead>
                       <tr style={{background:"#15803d",color:"white"}}>
                         {["구분","구경(A)","유량(m³/min)","동력(HP)","양정(m)","수원(m³)","전달방식","소화전 수(N)"].map(h=>(
-                          <th key={h} style={{border:BD,padding:"7px 10px",textAlign:"center",fontWeight:700,whiteSpace:"nowrap",fontFamily:"'Noto Sans KR',sans-serif"}}>{h}</th>
+                          <th key={h} style={{border:BD,padding:"7px 10px",textAlign:"center",fontWeight:700,whiteSpace:"nowrap",fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif"}}>{h}</th>
                         ))}
                       </tr>
                     </thead>
                     <tbody>
                       <tr style={{fontWeight:700,background:"white"}}>
                         {["주  펌  프",`${sys.pumpDia}×${sys.pumpDia}`,f3(C.M),C.Php,C.J,f3(C.D),TRANS_TYPE[sys.transType]?.label,`${C.A} 개`].map((v,i)=>(
-                          <td key={i} style={{border:BD,padding:"7px 10px",textAlign:"center",fontFamily:"'Noto Sans Mono','Noto Sans KR',monospace",fontSize:12,whiteSpace:"nowrap"}}>{v}</td>
+                          <td key={i} style={{border:BD,padding:"7px 10px",textAlign:"center",fontFamily:"'Noto Sans Mono','Noto Sans KR','Noto Sans KR Local',monospace",fontSize:12,whiteSpace:"nowrap"}}>{v}</td>
                         ))}
                       </tr>
                     </tbody>
                   </table>
-                  <div style={{textAlign:"center",marginTop:12,fontSize:16,fontWeight:900,color:"#15803d",letterSpacing:"0.04em",borderTop:"1px solid #bbf7d0",paddingTop:12,fontFamily:"'Noto Sans Mono','Noto Sans KR',monospace"}}>
+                  <div style={{textAlign:"center",marginTop:12,fontSize:16,fontWeight:900,color:"#15803d",letterSpacing:"0.04em",borderTop:"1px solid #bbf7d0",paddingTop:12,fontFamily:"'Noto Sans Mono','Noto Sans KR','Noto Sans KR Local',monospace"}}>
                     Q = {f3(C.M)} ㎥/min &nbsp;×&nbsp; H = {C.J} m &nbsp;×&nbsp; P = {C.Php} HP
                   </div>
                 </div>
               </div>
 
               {/* ─ 적용 법령 ─ */}
-              <div style={{padding:13,background:"#f8fafc",borderRadius:8,fontSize:11,color:"#6b7280",border:BD,fontFamily:"'Noto Sans KR',sans-serif",lineHeight:1.9}}>
+              <div style={{padding:13,background:"#f8fafc",borderRadius:8,fontSize:11,color:"#6b7280",border:BD,fontFamily:"'Noto Sans KR','Noto Sans KR Local',sans-serif",lineHeight:1.9}}>
                 <b style={{color:"#374151"}}>▣ 적용 법령 및 기준</b><br/>
                 ① 화재안전성능기준 NFPC 109 (옥외소화전설비의 화재안전성능기준)<br/>
                 &nbsp;&nbsp;&nbsp;[소방청고시 제2025-25호, 2025. 12. 24. 타법개정, 시행 2026. 3. 1.]<br/>
