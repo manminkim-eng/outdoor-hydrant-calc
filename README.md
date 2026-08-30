@@ -1,58 +1,116 @@
-# 🟢 옥외소화전 펌프 용량 계산서 PWA — Ver 3.2
+# 🔴 옥외소화전 펌프 용량 계산서 PWA — **Ver 5.0**
 
-> **Developer MANMIN** | 대성건축사사무소  
-> Blueprint Engineering Theme · **재설치 문제 원천 차단 버전**
+> **Developer MANMIN** | ㈜대성건축사사무소
+> MANMIN WAP 디자인 통일 · 소방 계열 02 · 마스터(옥내소화전)의 패턴을 복제했다.
 
 ---
 
-## 🆕 Ver 3.2 — 재설치 문제 완전 해결
+## 🆕 Ver 5.0 — 디자인 통일 + 출력물 정합
 
-### Ver 3.2 개선 목록
+소방웹이 **MANMIN WAP 39종 디자인 통일의 마스터**로 확정되었고, 이 도구는 그 기준을 적용한 결과다.
 
-| 위치 | 개선 내용 |
-|------|----------|
-| **sw.js** | `CACHE_VER = 'v3.2'` — 캐시 버전 명시적 구분 |
-| **sw.js INSTALL** | `skipWaiting()` 즉시 호출 → 대기 SW 없이 바로 활성화 |
-| **sw.js ACTIVATE** | 현재 버전 외 **모든 이전 캐시 전부 삭제** |
-| **sw.js ACTIVATE** | `clients.claim()` → 열린 탭 즉시 새 SW 적용 |
-| **sw.js MESSAGE** | `CLEAR_CACHE` 명령 추가 — 긴급 초기화 가능 |
-| **index.html SW** | 등록 시 `reg.waiting` 감지 → 즉시 `SKIP_WAITING` 전송 |
-| **index.html SW** | `appinstalled` 이벤트 → `sessionStorage` 설치 플래그 기록 |
-| **index.html SW** | `CACHE_CLEARED` 수신 시 자동 새로고침 |
-| **index.html SW** | `window.clearPwaCache()` 긴급 함수 노출 |
-| **index.html React** | `beforeinstallprompt` 시 세션플래그 초기화 |
-| **index.html React** | 설치 완료 시 `sessionStorage` 기록 |
+> **계산 로직은 1바이트도 변경하지 않았다.** 수식·상수·검증식·법령 인용문 모두 이전 버전과 동일하다.
+> 변경 범위는 `<style>` 블록 · 출력 래퍼 · 폰트 토큰 · 버전 문자열뿐이며,
+> **수치 토큰 다중집합 대조로 무변경을 검증**했다.
+
+### 조정 내역 — v5.0
+
+| # | 항목 | 기존 | 변경 (v5.0) |
+|---|------|------|------------|
+| ① | **A4 좌우 초과** | `@page` 좌우여백 26mm + `.rpt-inner{width:794px}` = 필요폭 236mm > 용지 210mm → 우측 잘림 | 인쇄 시 `width:auto` 해제 → 유효폭 **184mm** 정합 |
+| ② | **하단 버전 각인** | `@page{@bottom-right{content:…}}` — Chrome 미구현이라 **인쇄물에 안 찍힘** | `#dev-stamp` 를 `position:fixed` 로 전환 → **매 페이지 출력** |
+| ③ | **모바일 JPG 저장** | 없음 | `🖼️ JPG 저장` 버튼 — 인쇄와 **동일 DOM** 캡처 |
+| ④ | **고정폭 폰트** | `Noto Sans Mono` | `JetBrains Mono` + `Noto Sans KR` 폴백 (39종 공통) |
+| ⑤ | **출력 버튼 규격** | 도구별 상이 | `.mm-btn` 통일 — 남색 `#1E3A5F` 주/보조 2버튼 |
+| ⑥ | **버전 체계** | Ver 3.2 | **Ver-5.0 / CACHE v5.0** (전 39종 5.0 재출발) |
+
+### MANMIN A4 규격 (전 39종 공통)
+
+| 항목 | 값 |
+|------|-----|
+| 용지 | A4 portrait 210 × 297mm |
+| 여백 | 상 14 · 우 12 · 하 22 · 좌 14mm |
+| 유효 영역 | **184 × 261mm** |
+| 하단 각인 | `MANMIN-Ver5.0` · Orbitron 8pt · `#9CA3AF` · 우측 하단 |
+| 쪽번호 | **2매 이상일 때만** 좌측 하단 `n / 총장수` |
+
+### JPG 저장 동작
+
+쪽나눔 경계를 인쇄와 **공유**하므로 PDF와 JPG의 페이지 구성이 일치한다.
+
+```
+옥외소화전_{공사명}_{YYYYMMDD}[_n].jpg     페이지당 1588 × 2246px (scale 2)
+```
+
+| 단계 | 처리 |
+|---|---|
+| 배율 해제 | `rpt-inner` 의 `transform` 초기화 — 모바일 축소배율이 이미지에 박히는 것 방지 |
+| 폰트 대기 | `document.fonts.ready` — 웹폰트 로딩 전 캡처 시 시스템 폰트로 굳음 |
+| 글자 농도 | `inkOf()` — 밝기 0.55 초과 글자색을 `#111827` 로 보정 |
+| 배경 | `backgroundColor:'#FFFFFF'` 고정 |
+| 제외 | `.no-print` (버튼·힌트) |
+| 2매 이상 | **저장 시트** 표시 — 브라우저가 연속 자동 다운로드를 차단하므로 페이지별 버튼 제공 |
+
+`html2canvas` 는 CDN 로드이나 Service Worker(Network-First)가 첫 온라인 실행 시 캐시하므로
+이후 오프라인에서도 저장이 동작한다. **첫 실행은 온라인에서 할 것.**
+
+### 법령 근거
+
+| 기준 | 적용 | 계산 조항 |
+|---|---|---|
+| **NFPC / NFTC 109** 옥외소화전설비 | **2025.12.31 공포 · 2026.3.1 시행** | 제4조 수원 `N × 7㎥` · 제5조 `0.25MPa 이상 · 350ℓ/min 이상` |
+
+> **개정 영향 없음.** 2025.12.31 개정은 제6조①에 **방수총 신설**(공장·창고 특수가연물 750배 이상)과
+> 릴리프밸브 자구 정정(체절압력 "이하"→"미만")이며, **제4조 수원·제5조 방수압력은 개정되지 않았다.**
+>
+> 다만 실무상 **특수가연물 750배 이상 현장은 방수총이 추가 의무**다.
+> 이 도구로 펌프 용량을 산정한 뒤 배치 검토를 별도로 해야 한다.
 
 ---
 
 ## 📦 파일 구성
 
 ```
-outdoor-hydrant-v32/
-├── index.html          ← 메인 앱 (React 포함, Ver 3.2)
+outdoor-hydrant-calc/
+├── index.html          ← 메인 앱 (Ver 5.0)
 ├── manifest.json       ← PWA 매니페스트
-├── sw.js               ← 서비스 워커 (Ver 3.2 — 재설치 문제 해결)
+├── sw.js               ← 서비스 워커 (CACHE_VER = 'v5.0')
 ├── README.md
-└── icons/              ← 아이콘 13종
+└── icons/              ← 아이콘 세트
 ```
 
-## 🚀 GitHub Pages 배포
+## 🚀 배포
 
-1. 저장소 루트에 전체 업로드
-2. `Settings → Pages → main / (root)`
-3. **HTTPS URL** 접속 → **📲 앱 설치** FAB 클릭
+1. 폴더 내용물을 GitHub 저장소 루트에 업로드
+2. `Settings` → `Pages` → `Source: main branch / (root)`
+3. 배포 후 **Ctrl+Shift+R** (강력 새로고침) — SW 캐시 갱신
+4. 화면 하단 각인이 `Ver-5.0` 인지 확인
 
-## 🛠️ 재설치 문제 발생 시 긴급 해결
+## 🛠️ 캐시 문제 시
 
-브라우저 콘솔(`F12`)에서:
+브라우저 콘솔(`F12`):
 ```javascript
-clearPwaCache()
+clearPwaCache()   // 전체 캐시 초기화 → 자동 새로고침
 ```
 
-## 다음 버전 배포 시
-```javascript
-const CACHE_VER = 'v3.3';  // sw.js 한 줄만 변경
-```
+다음 배포 시에는 `sw.js` 의 `CACHE_VER` 한 줄만 올리면 된다.
 
 ---
-*MANMIN · Ver 3.2 · NFPC 109 (소방청고시 제2025-25호, 시행 2026.3.1.)*
+
+## ⏳ 이번 버전에 포함되지 않은 것
+
+| 항목 | 상태 |
+|---|---|
+| 분야색 이관 (소방 = `#B91C1C` 계열 통일) | **대기** — 화면 테마색은 아직 기존색 유지. 의미색(안내·판정)과 얽혀 도구별 육안 확인 필요 |
+| PWA 아이콘 통일 | 대기 — 형태 통일 + 심볼 구분 방식으로 결론, 시안 미착수 |
+| JetBrains Mono 로컬 woff2 | 대기 — 현재 Google Fonts 의존 (SW가 첫 로드 시 캐시) |
+
+---
+
+## 📚 이전 이력
+
+Ver 3.2 이하의 상세 이력은 각 도구 폴더의 구버전 백업본에 보존되어 있다.
+`index_백업_2026-08-30_원본.html` 및 구버전 폴더는 **전부 무변경 보존** 상태다.
+
+---
+*MANMIN · ㈜대성건축사사무소 · Ver 5.0 · 2026-08-30*
