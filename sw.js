@@ -32,7 +32,7 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE_VER    = 'v5.1.4';
+const CACHE_VER    = 'v5.1.5';
 const CACHE_NAME   = `manmin-outdoor-hydrant-${CACHE_VER}`;
 const STATIC_CACHE = `manmin-outdoor-hydrant-static-${CACHE_VER}`;
 
