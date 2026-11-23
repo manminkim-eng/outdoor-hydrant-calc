@@ -29,20 +29,20 @@ window.__find=sel=>{if(sel.startsWith('box:'))return __box(sel.slice(4));if(sel.
  for(const s of sel.split(',')){const e=[...document.querySelectorAll(s)].find(__vis);if(e)return e;}return null;};
 window.__EX=${JSON.stringify(EX)};
 window.__run=(k,tab)=>{const e=__EX[k];__mmHyd.setShowFormula(false);__mmHyd.setProj(e.proj);__mmHyd.setSys(e.sys);__mmHyd.setSegs(e.segs);__mmHyd.setTab(tab||0);window.scrollTo(0,0);};
-window.__ex=k=>{const e=__EX[k];const c=HYDENG.calc(e.sys,e.segs);const r={};['A','Clpm','D','E','F','G','I','Jraw','J','M','N','O','Pkw','Php','waterTime','maxN','Pdis','pipePressOK','hL','Plow','needPRV','hStar'].forEach(x=>r[x]=c[x]);
+window.__ex=k=>{const e=__EX[k];const c=HYDENG.calc(e.sys,e.segs);const r={};['A','Clpm','D','E','F','G','I','Jraw','J','M','N','O','Pkw','Php','waterTime','maxN','Pdis','Pshut','shutUser','hiPress','pipePressOK','hL','Plow','needPRV','hStar'].forEach(x=>r[x]=c[x]);
  r.seg=c.sdets.map(d=>({fric:d.fric,tl:d.tl,hl:d.hl}));r.vel=e.segs.map(s=>calcVelocity(s.flow,s.dia,e.sys.pipeType));return {in:e,R:r};};`;
 const SHOTS=[
  {id:'s01_overview',pre:"__run('A',0)",clip:'viewport',m:[['.tab-bar-wrap','작업 탭 · 매뉴얼'],['.sum-bar','요약 바'],['box:Ⅰ-0','프로젝트 정보'],['box:Ⅰ-1','시스템 파라미터'],['box:Ⅰ-2','배관 구간 입력'],['.fml-fab','계산식 안내']]},
  {id:'s02_header',clip:'nth:.no-print|0',m:[['nth:.tab-bar-wrap button|0','① 데이터 입력'],['nth:.tab-bar-wrap button|1','② 계산 결과'],['nth:.tab-bar-wrap button|2','③ 계산서 출력'],['.tb-manual','📘 매뉴얼'],['.hdr-right','근거 · 공고 · 시행일']]},
  {id:'s03_project',clip:'box:Ⅰ-0',m:[['lab:공사명','공사명'],['lab:설계자','설계자'],['lab:작성일','작성일']]},
- {id:'s04_params',clip:'box:Ⅰ-1',m:[['lab:A. 동시사용','A. 소화전 수 — 2개 이상이면 2개'],['lab:F. 실양정','실양정'],['lab:F-1. 최저 소화전','최저 소화전 높이 — 감압 판정'],['lab:G. 호스 길이','호스 길이 15 · 30 · 45 m'],['lab:G-1. 호스 타입','65 mm 호스 종류'],['lab:K. 펌프 토출구경','펌프 구경'],['lab:K-1. 펌프 효율','펌프 효율'],['lab:L. 동력 전달방식','전달방식'],['lab:배관 종류','배관 종류(C값)']]},
+ {id:'s04_params',clip:'box:Ⅰ-1',m:[['lab:A. 동시사용','A. 소화전 수 — 2개 이상이면 2개'],['lab:F. 실양정','실양정'],['lab:F-1. 최저 소화전','최저 소화전 높이 — 감압 판정'],['lab:G. 호스 길이','호스 길이 15 · 30 · 45 m'],['lab:G-1. 호스 타입','65 mm 호스 종류'],['lab:K. 펌프 토출구경','펌프 구경'],['lab:K-1. 펌프 효율','펌프 효율'],['lab:L. 동력 전달방식','전달방식'],['lab:배관 종류','배관 종류(C값)'],['lab:S-1. 펌프 체절압력','S-1 체절압력(선택) — 배관 사용압력']]},
  {id:'s05_segments',clip:'box:Ⅰ-2',crop:1100,m:[['nth:#root table tbody tr|0','1구간 — 펌프 토출 100A'],['nth:#root table tbody tr|1','2구간 — 옥외 매설 80A'],['nth:#root table tbody tr|2','3구간 — 소화전 분기 65A'],['nth:button|__ADD__','＋ 구간 추가']]},
  {id:'s06_source',pre:"__mmHyd.setTab(1)",wait:800,clip:'box:Ⅱ-1',m:[['card:A. 동시사용','A. 소화전 수 — 2개'],['card:B. 개당 방수량','B. 350 L/min 이상'],['card:C. 펌프 토출량','C. 펌프 토출량'],['card:D. 수원 용량','D. 수원 2 × 7 m³']]},
- {id:'s07_head',clip:'box:Ⅱ-2',m:[['card:E. 실양정','h₁ 실양정'],['card:F. 배관 마찰손실','h₂ 배관 마찰손실'],['card:G. 호스 마찰손실','h₃ 호스 마찰손실'],['card:H. 노즐 환산수두','h₄ 노즐 25 m'],['nth:.g-2 > div|1','소계 · 안전율 · 전양정'],['card:S. 토출압력','S 토출압력 — 배관 사용압력'],['card:T. 최저 소화전','T 최저 소화전 방수압 — 감압']]},
+ {id:'s07_head',clip:'box:Ⅱ-2',m:[['card:E. 실양정','h₁ 실양정'],['card:F. 배관 마찰손실','h₂ 배관 마찰손실'],['card:G. 호스 마찰손실','h₃ 호스 마찰손실'],['card:H. 노즐 환산수두','h₄ 노즐 25 m'],['nth:.g-2 > div|1','소계 · 안전율 · 전양정'],['card:S. 배관 사용압력','S 배관 사용압력 — 체절압력'],['card:T. 최저 소화전','T 최저 소화전 방수압 — 감압']]},
  {id:'s08_power',clip:'box:Ⅱ-3',m:[['card:M. 토출량','Q 토출량'],['card:J. 전양정','H 전양정'],['card:O. 전달계수','K 전달계수'],['card:N. 펌프 효율','η 펌프 효율'],['card:P. 이론 출력','P 이론 출력']]},
  {id:'s09_b_head',pre:"__run('B',1)",wait:900,clip:'box:Ⅱ-2',m:[['card:F. 배관 마찰손실','긴 단지 배관 — h₂'],['card:G. 호스 마찰손실','65 mm 아마호스 45 m'],['nth:.g-2 > div|1','전양정']]},
  {id:'s10_b_power',clip:'box:Ⅱ-3',m:[['card:P. 이론 출력','P 이론 출력'],['card:Q. 선정 출력','표준 HP']]},
- {id:'s11_c_head',pre:"__run('C',1)",wait:900,clip:'box:Ⅱ-2',m:[['nth:.g-2 > div|1','전양정'],['card:S. 토출압력','S 토출압력'],['card:T. 최저 소화전','감압장치 필요'],['.mm-prv-note','감압 검토 높이']]},
+ {id:'s11_c_head',pre:"__run('C',1)",wait:900,clip:'box:Ⅱ-2',m:[['nth:.g-2 > div|1','전양정'],['card:S. 배관 사용압력','S 체절압력 1.2 MPa 이상 — 배관 부적합'],['card:T. 최저 소화전','감압장치 필요'],['.mm-prv-note','감압 검토 높이']]},
  {id:'s12_formula',pre:"__run('A',0);setTimeout(()=>__mmHyd.setShowFormula(true),50)",wait:900,fixed:true,clip:'.fml-box',m:[]},
  {id:'s13_formula_src',pre:"[...document.querySelectorAll('.fml-tab')][1].click()",wait:500,fixed:true,clip:'.fml-box',m:[]},
  {id:'s14_formula_head',pre:"[...document.querySelectorAll('.fml-tab')][2].click()",wait:500,fixed:true,clip:'.fml-box',post:"__mmHyd.setShowFormula(false)",m:[]},
@@ -101,7 +101,7 @@ const SHOTS=[
  ex.mobile=await mp.evaluate(()=>({page:document.documentElement.scrollWidth,vw:innerWidth}));
  fs.writeFileSync(path.join(out,'_marks.json'),JSON.stringify(meta,null,1));fs.writeFileSync(path.join(out,'_example.json'),JSON.stringify(ex,null,1));
  const miss=[];Object.entries(meta).forEach(([k,v])=>v.marks.forEach(m=>{if(m.miss)miss.push(k+':'+m.miss);else if(m.x<0||m.y<0||m.x+m.w>100.5||m.y+m.h>100.5||m.w<=0||m.h<=0)miss.push(k+':OUT '+m.label+' '+m.x+','+m.y+','+m.w+','+m.h);}));
- const sh=o=>o&&{A:o.R.A,Q:o.R.Clpm,D:o.R.D,F:o.R.F,G:o.R.G,J:o.R.J,P:o.R.Pkw,HP:o.R.Php,S:o.R.Pdis,T:o.R.Plow,PRV:o.R.needPRV,hs:o.R.hStar,vel:o.R.vel};
+ const sh=o=>o&&{A:o.R.A,Q:o.R.Clpm,D:o.R.D,F:o.R.F,G:o.R.G,J:o.R.J,P:o.R.Pkw,HP:o.R.Php,S:o.R.Pdis,Sh:o.R.Pshut,ok:o.R.pipePressOK,T:o.R.Plow,PRV:o.R.needPRV,hs:o.R.hStar,vel:o.R.vel};
  console.log(JSON.stringify({A:sh(ex.A),B:sh(ex.B),C:sh(ex.C),mobile:ex.mobile,sizes:Object.fromEntries(Object.entries(meta).map(([k,v])=>[k,v.w+'x'+v.h])),miss,errs:errs.slice(0,15)},null,1));
  await b.close();s.close();
 })();
