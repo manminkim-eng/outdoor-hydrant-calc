@@ -426,7 +426,8 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
 <div id="root"></div>
 <script id="hyd-engine">
 /* v5.1.0 — 계산 엔진 단일화: 화면 · A4 · 검증(_검증/verify_odh.py)이 같은 hydCalc()를 쓴다
-   v6.1.3 (2026-11-23) — 배관 사용압력 체절압력 기준(Pshut, 교차검증 P1) — 수원 · 전양정 · 동력 불변 */
+   v6.1.3 (2026-11-23) — 배관 사용압력 체절압력 기준(Pshut, 교차검증 P1) — 수원 · 전양정 · 동력 불변
+   v6.1.4 (2026-11-24) — 엔진 불변 · 화면 · A4 문구만(교차검증 권고 P4 겸용 안내 · A칸 「설치 소화전 수」 · P5 감압 문구 · KS D 3583 선택지 문구) */
 /* 근거: 옥외소화전설비의 화재안전성능기준(NFPC 109) 소방청고시 제2025-28호(2026. 3. 1. 시행) · 화재안전기술기준(NFTC 109) 국립소방연구원공고 제2026-9호(2026. 3. 1. 시행) */
 var NOZZLE_HEAD      = 25;    /* 노즐선단 방수압력 0.25 MPa 이상 ≒ 25 m (NFPC 109 제5조①3호 · NFTC 109 2.2.1.3) */
 var FLOW_PER_HYDRANT = 350;   /* 개당 방수량 350 L/min 이상(계산 350) */
@@ -1204,8 +1205,8 @@ function App(){
               <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(210px,1fr))",gap:14}}>
                 {/* A */}
                 <div>
-                  <LabelEl>A. 동시사용 소화전 수</LabelEl>
-                  <InpNum val={sys.hydrants} min={1} max={2} onChange={v=>ss("hydrants",v)} unit="개 (최대 2)"/>
+                  <LabelEl>A. 설치 소화전 수</LabelEl>
+                  <InpNum val={sys.hydrants} min={1} onChange={v=>ss("hydrants",v)} unit="개"/>
                   <div style={{fontSize:11,color:"#9ca3af",marginTop:4}}>개당 방수량 350 ℓ/min 이상(계산 350) · 2개 이상이면 2개 (NFPC 109 제4조① · 제5조①3호)</div>
                 </div>
                 {/* F */}
@@ -1275,7 +1276,7 @@ function App(){
                   )}
                   {!C.pipePressOK&&(
                     <div className="mm-pipe-warn" style={{marginTop:5,fontSize:11,color:"#b91c1c",fontWeight:700,padding:"4px 8px",background:"#fef2f2",borderRadius:6,border:"1px solid #fecaca"}}>
-                      ⚠ 사용압력(체절) {ff(C.Pshut,2)} MPa ≥ 1.2 MPa — KS D 3562 · 3583 사용 또는 릴리프밸브로 1.2 MPa 미만 유지(NFTC 109 2.3.3.2) · NFPC 109 제6조③은 KS D 5301도 허용
+                      ⚠ 사용압력(체절) {ff(C.Pshut,2)} MPa ≥ 1.2 MPa — KS D 3562 · 3583 사용 또는 릴리프밸브로 1.2 MPa 미만 유지(NFTC 109 2.3.3.2) · NFPC 109 제6조③은 KS D 5301도 허용 · 이 앱의 선택지 중에는 KS D 3562(흑관)만 해당(3583 · 5301은 C값 · 내경 따로 확인)
                     </div>
                   )}
                 </div>
@@ -1393,6 +1394,7 @@ function App(){
                 <Card label="C. 펌프 토출량" value={C.Clpm} unit="ℓ/min" formula={`C = ${C.A} × ${FLOW_PER_HYDRANT}`} bc="orange"/>
                 <Card label="D. 수원 용량" value={f3(C.D)} unit="m³" formula={`D = ${C.A} × 7 m³`} badge="필요 저수량" bc="emerald"/>
               </div>
+              <div className="mm-joint-note" style={{marginTop:8,fontSize:11,color:"#6b7280",lineHeight:1.6}}>※ 옥외소화전설비 단독 계산입니다 — 옥내소화전 · 스프링클러 등과 수원 · 펌프를 겸용하면 각 설비의 저수량 · 토출량을 합한 양 이상(NFPC 109 제11조①② · NFTC 109 2.8.1 · 2.8.2, 방화벽 · 방화문 구획 단서는 최대값).</div>
             </Box>
 
             <Box title="Ⅱ-2. 펌프 양정 계산" accent="#14532d">
@@ -1431,7 +1433,7 @@ function App(){
                 <Card label="T. 최저 소화전 노즐 방수압 (추정)" value={ff(C.Plow,3)} unit="MPa" formula={`(J − 최저 ${ff(C.hL,1)} − h₃ ${f3(C.G)}) × 0.0098 — 배관 마찰 미차감`} badge={C.needPRV?"감압장치 필요":"0.7 MPa 이하"} bc={C.needPRV?"red":"green"}/>
               </div>
               <div className="mm-prv-note" style={{marginTop:8,fontSize:11,color:"#6b7280",lineHeight:1.6}}>
-                ※ 하나의 옥외소화전 노즐 방수압이 0.7 MPa를 넘으면 호스접결구 인입측에 감압장치(NFPC 109 제5조①3호 단서 · NFTC 109 2.2.1.3) — {C.needPRV?<>펌프 기준 <b style={{color:"#b91c1c"}}>{ff(C.hStar,1)} m</b> 미만 높이의 호스접결구는 감압장치 검토.</>:<>최저 소화전도 0.7 MPa 이하(추정) — 감압장치 불요.</>} 저유량 운전 시 양정 상승(성능곡선)은 반영하지 않은 추정값입니다.
+                ※ 하나의 옥외소화전 노즐 방수압이 0.7 MPa를 넘으면 호스접결구 인입측에 감압장치(NFPC 109 제5조①3호 단서 · NFTC 109 2.2.1.3) — {C.needPRV?<>펌프 기준 <b style={{color:"#b91c1c"}}>{ff(C.hStar,1)} m</b> 미만 높이의 호스접결구는 감압장치 검토.</>:<>최저 소화전도 0.7 MPa 이하(정격점 추정) — 소화전 1개만 사용할 때 펌프 압력 상승(체절 측)은 성능곡선으로 최종 확인.</>} 저유량 운전 시 양정 상승(성능곡선)은 반영하지 않은 추정값입니다.
               </div>
             </Box>
 
@@ -1538,7 +1540,7 @@ function App(){
                 <RRow no="I" label="안전율 (SF = 10%)"                  value={f3(C.I)}          unit="m"  basis={`I = (E+F+G+H₄) × 0.1 = ${f3(C.E+C.F+C.G+C.H4)} × 0.1`}/>
                 <RRow no="J" label="전  양  정"                         value={`${f3(C.Jraw)} → ${C.J}`} unit="m"  basis={`J = E+F+G+H+I = ${f3(C.Jraw)} m → ${C.J} m (올림 적용) — 안전율 10 % · 올림은 MANMIN 참고값(화재안전기준에 수치 없음)`} hi/>
                 <RRow no="S" label="배관 사용압력 (체절압력)"           value={ff(C.Pshut,3)}         unit="MPa" basis={`S = ${C.shutUser?"입력 체절압력":`J × 0.0098 × 1.4 (정격 ${ff(C.Pdis,3)})`} — ${C.hiPress?"1.2 MPa 이상 → KS D 3562 · 3583(NFTC 109 2.3.3.2) 또는 릴리프밸브로 1.2 MPa 미만":"1.2 MPa 미만"} (소방청 해석) · ${C.pCfg.shortLabel} ${C.pipePressOK?"적합":"부적합 ⚠"}`}/>
-                <RRow no="T" label="최저 소화전 노즐 방수압 (추정)"     value={ff(C.Plow,3)}          unit="MPa" basis={`T = (J − 최저 ${ff(C.hL,1)} m − h₃) × 0.0098 — ${C.needPRV?"0.7 MPa 초과 → 감압장치 필요":"0.7 MPa 이하"} (NFPC 109 제5조①3호 단서)${C.needPRV?` · 펌프 기준 ${ff(C.hStar,1)} m 미만 감압 검토`:""}`}/>
+                <RRow no="T" label="최저 소화전 노즐 방수압 (추정)"     value={ff(C.Plow,3)}          unit="MPa" basis={`T = (J − 최저 ${ff(C.hL,1)} m − h₃) × 0.0098 — ${C.needPRV?"0.7 MPa 초과 → 감압장치 필요":"0.7 MPa 이하(정격점 추정 — 1개 사용 시 압력 상승은 성능곡선으로 확인)"} (NFPC 109 제5조①3호 단서)${C.needPRV?` · 펌프 기준 ${ff(C.hStar,1)} m 미만 감압 검토`:""}`}/>
               </RSection>
 
               {/* ─ Ⅱ-3 전동기 ─ */}
@@ -1632,6 +1634,7 @@ function App(){
                 &nbsp;&nbsp;- 제4조① (수원): 설치개수(2개 이상이면 2개) × 7 m³ 이상<br/>
                 &nbsp;&nbsp;- 제5조①3호 (가압송수장치): 방수압 0.25 MPa 이상 · 방수량 350 ℓ/min 이상(0.7 MPa 초과 시 감압장치) · ①4호 전용 펌프<br/>
                 &nbsp;&nbsp;- 제6조 (배관 등): ①1호 수평거리 40 m 이하 · ② 호스 65 mm · ③ 배관(1.2 MPa 이상 KS D 3562 · KS D 5301 등)<br/>
+                &nbsp;&nbsp;- 제11조 (겸용): 수원 · 펌프를 다른 소화설비와 겸용하면 각 설비 저수량 · 토출량 합산(NFTC 109 2.8) — 이 계산서는 옥외소화전 단독<br/>
                 ② 화재안전기술기준 NFTC 109 [국립소방연구원공고 제2026-9호, 시행 2026. 3. 1.] — 2.1.1 · 2.2.1.3 · 2.3.2 · 2.3.3(1.2 MPa 이상 KS D 3562 · 3583)<br/>
                 ③ 배관 마찰손실: Hazen-Williams 공식 — {C.pCfg.shortLabel}, C = {C.pCfg.C} 적용 · 강관 내경 KS 외경 − 2 × 두께
                 {sys.pipeType==="STS"&&" (내식성 배관 — C=150 적용)"}<br/>
@@ -2307,12 +2310,12 @@ input[data-mm-warn]{outline:2px solid #d32f2f!important;outline-offset:1px;backg
 function byL(t){return A(document.querySelectorAll('label')).filter(function(l){return l.textContent.trim().indexOf(t)===0;}).map(function(l){return l.parentElement.querySelector('input[type=number]');});}
 var A=function(x){return Array.prototype.slice.call(x);},pp=function(el){return el.parentElement&&el.parentElement.parentElement;};
 window.MM_WARN_CFG={react:true,all:true,keep:true,report:'#report-zone',rules:[
- {sel:function(){return byL('A. 동시사용 소화전 수');},name:'A. 동시사용 소화전 수',zero:'1개',neg:'음수 → 1개 적용',int:'개',at:pp},
+ {sel:function(){return byL('A. 설치 소화전 수');},name:'A. 설치 소화전 수',zero:'1개',neg:'음수 → 1개 적용',int:'개',at:pp},
  {sel:function(){return byL('F. 실양정');},name:'F. 실양정',neg:true,at:pp},
  {sel:function(){return A(document.querySelectorAll('table input[type=number]')).filter(function(e){return !e.closest('#report-zone');});},name:'배관 구간표(직관 · 이음쇠)',neg:true},
  /* v6.1.3 교차검증 P3 — 첫 구간(펌프 토출 측) 유량 ↔ 토출량(적용 개수 × 350 ℓ/min) */
  {sel:function(){return A(document.querySelectorAll('table input[type=number]')).filter(function(e){return !e.closest('#report-zone');}).slice(0,1);},name:'배관 구간 1 유량',neg:true,
-  extra:function(el,n){var h=byL('A. 동시사용 소화전 수')[0],v=h?(parseFloat(h.value)||0):2,q=Math.min(2,Math.max(1,v|0))*350;
+  extra:function(el,n){var h=byL('A. 설치 소화전 수')[0],v=h?(parseFloat(h.value)||0):2,q=Math.min(2,Math.max(1,v|0))*350;
    return n!==q?n+' ≠ 토출량 '+q+' ℓ/min(첫 구간 = 펌프 토출 측) — 확인':null;}}]};
 </script>
 <script id="mm-warn-js">
