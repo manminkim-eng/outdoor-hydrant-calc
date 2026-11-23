@@ -32,23 +32,24 @@ def py(sys_,segs):
     P=0.163*(Q/1000)*J*K[sys_['transType']]/(sys_['pumpEff']/100); hp=P*1.341
     Php=next((h for h in HP if h>=hp), math.ceil(hp/5)*5)
     rg=1000*9.80665/1e6                                                  # MPa per m (ρ = 1,000 kg/m³ · g = 9.80665 m/s²)
-    Pdis=J*rg; ok=(Pdis<1.2) or sys_['pipeType']=='SCH40'                 # SCH40 = KS D 3562
+    Pdis=J*rg; sh=sys_.get('shutPress',0) or 0; Pshut=sh if sh>0 else Pdis*1.4   # v6.1.3 체절압력(입력 없으면 정격 × 1.4 — NFPC 109 제5조①6호 · 소방청 해석 412390)
+    ok=(Pshut<1.2) or sys_['pipeType']=='SCH40'                          # SCH40 = KS D 3562
     Plow=(J-sys_['lowHead']-G)*rg; hStar=(J-G)-0.7/rg
-    return dict(A=A,Clpm=Q,D=D,F=F,G=G,J=J,Pkw=P,Php=Php,Pdis=Pdis,pipePressOK=ok,Plow=Plow,needPRV=Plow>0.7,hStar=hStar)
+    return dict(A=A,Clpm=Q,D=D,F=F,G=G,J=J,Pkw=P,Php=Php,Pdis=Pdis,Pshut=Pshut,pipePressOK=ok,Plow=Plow,needPRV=Plow>0.7,hStar=hStar)
 random.seed(20261015); cases=[]
 for _ in range(N):
     sy=dict(hydrants=random.randint(1,10),actualHead=round(random.uniform(5,180),1),hoseLen=random.choice([15,30,45]),hoseType=random.randint(1,2),
             transType=random.randint(1,2),pumpDia=random.choice([40,50,65,80,100,125,150]),pumpEff=random.randint(10,80),
             pipeType=random.choice(['SCH10','SCH40','STS']),
-            lowHead=round(random.uniform(-10,60),1))
+            lowHead=round(random.uniform(-10,60),1),shutPress=random.choice([0,0,round(random.uniform(0.3,2.0),2)]))
     sg=[dict(flow=random.choice([350,700]),dia=random.choice([40,50,65,80,100,125,150,200]),len=round(random.uniform(0,120),1),
              **{k:random.randint(0,6) for k in FK}) for _ in range(random.randint(1,5))]
     cases.append((sy,sg))
 tf=os.path.join(tempfile.gettempdir(),'_odh_cases.json'); json.dump(cases,open(tf,'w'))
 js=os.path.join(tempfile.gettempdir(),'_odh_run.js')
-open(js,'w',encoding='utf-8').write("var window=globalThis;\n"+eng+"\nconst cs=require(process.argv[2]);process.stdout.write(JSON.stringify(cs.map(([s,g])=>{const c=hydCalc(s,g);return {A:c.A,Clpm:c.Clpm,D:c.D,F:c.F,G:c.G,J:c.J,Pkw:c.Pkw,Php:c.Php,Pdis:c.Pdis,pipePressOK:c.pipePressOK,Plow:c.Plow,needPRV:c.needPRV,hStar:c.hStar}})));")
+open(js,'w',encoding='utf-8').write("var window=globalThis;\n"+eng+"\nconst cs=require(process.argv[2]);process.stdout.write(JSON.stringify(cs.map(([s,g])=>{const c=hydCalc(s,g);return {A:c.A,Clpm:c.Clpm,D:c.D,F:c.F,G:c.G,J:c.J,Pkw:c.Pkw,Php:c.Php,Pdis:c.Pdis,Pshut:c.Pshut,pipePressOK:c.pipePressOK,Plow:c.Plow,needPRV:c.needPRV,hStar:c.hStar}})));")
 E=json.loads(subprocess.check_output(['node',js,tf]))
-bad=[];keys=['A','Clpm','D','F','G','J','Pkw','Php','Pdis','pipePressOK','Plow','needPRV','hStar']
+bad=[];keys=['A','Clpm','D','F','G','J','Pkw','Php','Pdis','Pshut','pipePressOK','Plow','needPRV','hStar']
 for i,((sy,sg),e) in enumerate(zip(cases,E)):
     p=py(sy,sg)
     for k in keys:
