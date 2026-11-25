@@ -6,7 +6,7 @@
      옥외소화전설비의 화재안전기술기준(NFTC 109) 국립소방연구원공고 제2026-9호(2026. 3. 1. 시행) 2.1 · 2.2 · 2.3
    예제 수치는 캡처 때 앱 엔진(window.HYDENG.calc)으로 계산해 기록한 _example.json 에서 가져온다.
    참고값 표(호스 손실률 · 강관 내경)는 앱 index.html 의 hyd-engine 을 node 로 읽는다."""
-import os, sys, json, subprocess
+import re, os, sys, json, subprocess
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from manual_engine import fig, T, render, B, MARKS
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -18,11 +18,11 @@ JS = r"""const fs=require('fs');const s=fs.readFileSync(process.argv[1],'utf8');
 const e=s.slice(a,s.indexOf('</script>',a));var window=globalThis;eval(e);console.log(JSON.stringify({PIPE_CONFIG,HOSE_TYPES,FITTING_EQ,TRANS_TYPE,PUMP_EFF}));"""
 D = json.loads(subprocess.check_output(['node', '-e', JS, APPHTML]))
 
-VER = 'Ver-5.1'
-REL = 'v6.1.4'
+VER = 'Ver-6.1'
+REL = 'v' + '.'.join(map(str, max(tuple(map(int, v.split('.'))) for v in re.findall(r'v(6\.\d+\.\d+)', open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'sw.js'), encoding='utf-8').read()))))   # 도구 판 = sw.js 캐시 판(2026-11-25 Ver-6.1 표기 통일)
 DATE = '2026-10-15'
-UPD = '2026-11-24'   # v6.1.4 — 교차검증 권고: 겸용 안내 · A칸 「설치 소화전 수」 · 감압 정격점 추정 문구
-PDF = '옥외소화전_사용자매뉴얼_Ver-5.1.pdf'
+UPD = '2026-11-25'   # Ver-6.1 표기 통일(판 이름 · PDF 이름 · 대상 프로그램 판), 내용 변경 없음 — 직전 개정 2026-11-24
+PDF = '옥외소화전_사용자매뉴얼_Ver-6.1.pdf'
 APP_URL = 'https://manminkim-eng.github.io/outdoor-hydrant-calc/'
 APP = '옥외소화전 펌프 용량 계산서'
 NFPC = '옥외소화전설비의 화재안전성능기준(NFPC 109) 소방청고시 제2025-28호(2026. 3. 1. 시행)'
@@ -92,7 +92,7 @@ S.append(f"""{EXTRA_CSS}<section class="ch" id="ch0"><h2><span class="n">00</spa
 {K(T([
  ['대상 프로그램', f'{APP} <b>MANMIN {VER}</b>({REL}) — 탭 막대 「📘 매뉴얼」 버튼으로 이 문서가 열립니다'],
  ['접속 주소', f'<a href="{APP_URL}" target="_blank" rel="noopener">manminkim-eng.github.io/outdoor-hydrant-calc</a>'],
- ['매뉴얼 판', f'<b>{VER}</b> (화면 표기와 같은 판 번호, 초판 {DATE}) · 개정 {UPD} · 작성 김만민 건축사(㈜대성건축사사무소)'],
+ ['매뉴얼 판', f'<b>{VER}</b> (도구 판 6.1.x와 맞춘 판 번호, 초판 {DATE}) · 개정 {UPD} · 작성 김만민 건축사(㈜대성건축사사무소)'],
  ['내려받기', f'<a href="{PDF}" download>PDF(A4)</a> · <a href="../index.html">{APP} 열기</a>'],
  ['예제', f'본문 그림은 예제 A(익산 공장 — 옥외소화전 3개 · 실양정 8 m)로 캡처했습니다 — <b>토출량 {A["Clpm"]} L/min · 수원 {f3(A["D"])} m³ · 전양정 {A["J"]} m · {A["Php"]:g} HP</b>. 예제 B(물류창고 긴 단지 배관) · C(경사지 — 감압장치)는 <a href="#a2">부록 A2</a>'],
  ['근거 법령', f'{LAW} — LawMCP(국가법령정보센터) 원문 대조({DATE})'],
@@ -313,8 +313,9 @@ S.append(f"""<section class="ch" id="ch7"><h2><span class="n">부록</span></h2>
 <p>예제 C는 체절압력 {f3(C['Pshut'])} MPa로 1.2 MPa 이상이라 KS D 3507이 「배관 부적합」이고, 최저 소화전 방수압이 0.7 MPa를 넘어 펌프 기준 {f1(C['hStar'])} m 미만 호스접결구에 감압장치를 검토합니다.</p>
 <h3 id="a3">A3. 버전 변경 내역</h3>
 {K(T([
- [f'Ver-5.1 · v6.1.4 ({UPD})', '교차검증 권고 반영 — 입력칸 「A. 설치 소화전 수」(상한 2 제거, 계산은 2개 한도 그대로) · 겸용 합산 안내(NFPC 109 제11조) · 감압 「0.7 MPa 이하(정격점 추정)」 · 배관 경고에 KS D 3562 선택지 안내 — 계산 변경 없음'],
- ['Ver-5.1 · v6.1.3 (2026-11-23)', '교차검증 반영 — 배관 사용압력을 체절압력 기준으로 판정(S-1 체절압력 입력, 없으면 정격 × 1.4 · 소방청 법령해석 412390, 예제 C는 「배관 부적합」으로 바뀜) · 입력값 경고(0 · 음수 · 첫 구간 유량 ≠ 토출량) — 수원 · 전양정 · 동력 변경 없음'],
+ [f'Ver-6.1 · {REL} (2026-11-25)', '매뉴얼 판 표기 통일 — Ver-5.1 → Ver-6.1(도구 판 6.1.x와 맞춤) · PDF 이름 「…_Ver-6.1.pdf」 · 대상 프로그램 판 · 작성일 갱신 — 본문 · 계산 · 예제 변경 없음'],
+ ['Ver-6.1 · v6.1.4 (2026-11-24)', '교차검증 권고 반영 — 입력칸 「A. 설치 소화전 수」(상한 2 제거, 계산은 2개 한도 그대로) · 겸용 합산 안내(NFPC 109 제11조) · 감압 「0.7 MPa 이하(정격점 추정)」 · 배관 경고에 KS D 3562 선택지 안내 — 계산 변경 없음'],
+ ['Ver-6.1 · v6.1.3 (2026-11-23)', '교차검증 반영 — 배관 사용압력을 체절압력 기준으로 판정(S-1 체절압력 입력, 없으면 정격 × 1.4 · 소방청 법령해석 412390, 예제 C는 「배관 부적합」으로 바뀜) · 입력값 경고(0 · 음수 · 첫 구간 유량 ≠ 토출량) — 수원 · 전양정 · 동력 변경 없음'],
  ['Ver-5.1 · v5.1.12 (2026-11-09)', '「🏢 건물개요」 저장 · 불러오기 — 공사명 · 설계자을(를) 다른 MANMIN 도구와 공유, 파일 내보내기 · 가져오기(공통 원본 MM-PROJECT v1.2, 계산 변경 없음)'],
  [f'Ver-5.1 · v5.1.0 ({DATE})', 'NFPC 109(제2025-28호) · NFTC 109(제2026-9호) 원문 대조 근거 정정, KS 강관 내경, 압력 판정(1.2 MPa 배관 · 0.7 MPa 감압), MANMIN 참고값 표기, 계산 엔진 단일화, 탭 막대 「📘 매뉴얼」 · 사용자 매뉴얼(<a href="#s4-7">4-7</a>)'],
  ['Ver-5.0 (2026-09)', 'MANMIN 디자인 통일(헤더 · 탭 · 요약 바 · A4 · JPG 저장), PWA'],
